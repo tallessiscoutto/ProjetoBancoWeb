@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'Relatório de Vendas'); ?>
 
 <?php $__env->startSection('content'); ?>

@@ -277,7 +277,7 @@
             <li class="nav-item">
                 <a href="<?php echo e(route('home')); ?>" class="nav-link">
                     <i class="fas fa-home"></i>
-                    Login
+                    Dashboard
                 </a>
             </li>
             <li class="nav-item">
