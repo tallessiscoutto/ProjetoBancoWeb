@@ -7,6 +7,7 @@
     <title>@yield('title') - Perfumes da Chiquinha</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
     :root {
         --primary-color: #2c3e50;
@@ -24,10 +25,20 @@
         box-sizing: border-box;
         font-family: 'Poppins', sans-serif;
     }
+    
+    html {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100%;
+    }
 
     body {
         background-color: #f5f6fa;
         min-height: 100vh;
+        overflow-x: hidden !important;
+        width: 100%;
+        max-width: 100%;
+        position: relative;
     }
 
     .sidebar {
@@ -40,7 +51,9 @@
         padding: 1rem;
         color: white;
         overflow-y: auto;
+        overflow-x: hidden;
         z-index: 1000;
+        margin-right: 2rem;
     }
 
     .sidebar-header {
@@ -90,8 +103,27 @@
     }
 
     .main-content {
-        margin-left: var(--sidebar-width);
-        padding: 2rem;
+        margin-left: calc(var(--sidebar-width) + 2rem);
+        padding: 2rem 3rem;
+        width: calc(100% - var(--sidebar-width) - 2rem);
+        max-width: calc(100% - var(--sidebar-width) - 2rem);
+        overflow-x: hidden;
+        overflow-y: visible;
+        box-sizing: border-box;
+        position: relative;
+        min-width: 0;
+    }
+    
+    /* Garantir que o conteúdo não ultrapasse */
+    .main-content > * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    .main-content .content-card,
+    .main-content .page-header {
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     .page-header {
@@ -100,6 +132,9 @@
         padding: 1.5rem;
         border-radius: 15px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .page-header h2 {
@@ -118,6 +153,18 @@
         padding: 1.5rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         margin-bottom: 1.5rem;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        overflow-y: visible;
+        min-width: 0;
+        position: relative;
+    }
+    
+    .content-card > * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .form-group {
@@ -181,12 +228,16 @@
 
     .table-responsive {
         overflow-x: auto;
+        width: 100%;
+        max-width: 100%;
     }
 
     .table {
         width: 100%;
+        max-width: 100%;
         border-collapse: collapse;
         margin-bottom: 1rem;
+        table-layout: auto;
     }
 
     .table th,
@@ -204,6 +255,35 @@
 
     .table tr:hover {
         background: #f8f9fa;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .table-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        white-space: nowrap;
+    }
+    
+    .table-actions .btn,
+    .table-actions form {
+        margin: 0;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
+    }
+    
+    .table-actions .btn {
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .table-actions form .btn {
+        padding: 0.4rem 0.8rem;
     }
 
     .alert {
@@ -250,17 +330,113 @@
         background: #c0392b;
     }
 
+    .menu-toggle {
+        display: none;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1001;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
     @media (max-width: 768px) {
         .sidebar {
             transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sidebar.active {
+            transform: translateX(0);
         }
 
         .main-content {
-            margin-left: 0;
+            margin-left: 0 !important;
+            padding: 1rem 1.5rem;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden;
+        }
+        
+        html, body {
+            overflow-x: hidden !important;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
+        
+        .content-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 1rem !important;
         }
 
         .menu-toggle {
             display: block;
+        }
+        
+        .content-card {
+            margin-top: 0;
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 1rem;
+        }
+        
+        .page-header {
+            margin-top: 0;
+            padding: 1rem;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Garantir que modais fiquem acima do sidebar */
+        .modal {
+            z-index: 1055 !important;
+        }
+        
+        .modal-backdrop {
+            z-index: 1050 !important;
+        }
+        
+        /* Overlay para fechar sidebar ao clicar fora */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .main-content {
+            padding: 0.5rem;
+        }
+        
+        .content-card {
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        
+        .page-header {
+            padding: 0.8rem;
+        }
+        
+        .page-header h2 {
+            font-size: 1.5rem;
         }
     }
     </style>
@@ -268,70 +444,13 @@
 </head>
 
 <body>
-    <nav class="sidebar">
-        <div class="sidebar-header">
-            <h1>Perfumes da Chiquinha</h1>
-        </div>
-
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="{{ route('home') }}" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Produtos.cadastro') }}" class="nav-link">
-                    <i class="fas fa-box"></i>
-                    Produtos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Clientes.cadastro') }}" class="nav-link">
-                    <i class="fas fa-users"></i>
-                    Clientes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Fornecedores.cadastro') }}" class="nav-link">
-                    <i class="fas fa-truck"></i>
-                    Fornecedores
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Funcionarios.cadastro') }}" class="nav-link">
-                    <i class="fas fa-user-tie"></i>
-                    Funcionários
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Vendas.cadastro') }}" class="nav-link">
-                    <i class="fas fa-shopping-cart"></i>
-                    Vendas
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Compras.cadastro') }}" class="nav-link">
-                    <i class="fas fa-shopping-bag"></i>
-                    Compras
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('Relatorios.vendas') }}" class="nav-link">
-                    <i class="fas fa-chart-bar"></i>
-                    Relatórios
-                </a>
-            </li>
-        </ul>
-
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-                Sair
-            </button>
-        </form>
-    </nav>
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    
+    @include('components.sidebar')
 
     <main class="main-content">
         @if(session('success'))
@@ -346,6 +465,8 @@
         </div>
         @endif
 
+        @include('components.sidebar')
+
         <div class="page-header">
             <h2>@yield('page-title')</h2>
             <p>@yield('page-description')</p>
@@ -356,6 +477,27 @@
         </div>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+        
+        // Fechar sidebar ao clicar em um link (mobile)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth <= 768) {
+                const navLinks = document.querySelectorAll('.sidebar .nav-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        toggleSidebar();
+                    });
+                });
+            }
+        });
+    </script>
     @yield('scripts')
 </body>
 

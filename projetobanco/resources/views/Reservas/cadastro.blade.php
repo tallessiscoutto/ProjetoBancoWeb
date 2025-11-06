@@ -114,16 +114,16 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="btn-group">
-                                        <form method="POST" action="{{ route('Reservas.concluir', $r->id) }}">
+                                    <div class="table-actions">
+                                        <form method="POST" action="{{ route('Reservas.concluir', $r->id) }}" style="display: inline;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success" {{ $r->status!=='ativa' ? 'disabled' : '' }}>
+                                            <button type="submit" class="btn btn-success" {{ $r->status!=='ativa' ? 'disabled' : '' }}>
                                                 <i class="fas fa-check"></i>
                                             </button>
                                         </form>
-                                        <form method="POST" action="{{ route('Reservas.cancelar', $r->id) }}" class="ms-2">
+                                        <form method="POST" action="{{ route('Reservas.cancelar', $r->id) }}" style="display: inline;">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-danger" {{ $r->status!=='ativa' ? 'disabled' : '' }}>
+                                            <button type="submit" class="btn btn-danger" {{ $r->status!=='ativa' ? 'disabled' : '' }}>
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>

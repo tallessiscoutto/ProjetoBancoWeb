@@ -12,6 +12,7 @@ use App\Http\Controllers\RF_R01Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProdutosController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,17 +27,14 @@ Route::post('/register', [AuthController::class, 'register']);
 // Rotas protegidas
 Route::middleware(['auth'])->group(function () {
     // Rota inicial após login (dashboard)
-    Route::get('/', function () {
-        return view('home');
-    })->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     
-    Route::get('/home', function () {
-        return view('home');
-    });
+    Route::get('/home', [HomeController::class, 'index']);
 
     // Rotas de Produtos
     Route::get('/Produtos/cadastro', [ProdutosController::class, 'index'])->name('Produtos.cadastro');
     Route::get('/Produtos/visualizar', [ProdutosController::class, 'visualizar'])->name('Produtos.visualizar');
+    Route::get('/Produtos/show/{id}', [ProdutosController::class, 'show'])->name('Produtos.show');
     Route::post('/Produtos/salvar', [ProdutosController::class, 'store'])->name('Produtos.salvar');
     Route::get('/Produtos/editar/{id}', [ProdutosController::class, 'edit'])->name('Produtos.editar');
     Route::put('/Produtos/atualizar/{id}', [ProdutosController::class, 'update'])->name('Produtos.atualizar');
@@ -77,7 +75,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Rotas de Vendas
     Route::match(['get', 'post'], '/Vendas/cadastro', [RF_F02Controller::class, 'cadastrarVenda'])->name('Vendas.cadastro');
-    Route::post('/Vendas/cadastro', [RF_F02Controller::class, 'buscarProduto'])->name('Vendas.buscar');
+    Route::post('/Vendas/buscar-produto', [RF_F02Controller::class, 'buscarProduto'])->name('Vendas.buscar');
+    Route::post('/Vendas/buscar-cliente', [RF_F02Controller::class, 'buscarCliente'])->name('Vendas.buscarCliente');
     Route::post('/Vendas/salvar', [RF_F02Controller::class, 'salvarVenda'])->name('Vendas.salvar');
 
     // Rotas de Relatórios

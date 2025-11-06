@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder //Isso serve para que o seeder funcione
         $this->call([
             CategoriaSeeder::class,
             FornecedorSeeder::class,
+            ClienteSeeder::class,
+            FuncionarioSeeder::class,
+            ProdutoSeeder::class,
         ]);
     }
 }

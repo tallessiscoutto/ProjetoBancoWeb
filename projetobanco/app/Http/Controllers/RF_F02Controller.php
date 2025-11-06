@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Produto;
 use App\Models\Venda;
 use App\Models\Funcionario;
+use App\Models\Cliente;
 
 class RF_F02Controller extends Controller
 {
@@ -14,6 +15,8 @@ class RF_F02Controller extends Controller
     {
         $produtoSelecionado = null;
         $funcionarios = Funcionario::all();
+        $clientes = Cliente::all();
+        $produtos = Produto::with('fornecedor')->get();
 
         if ($request->isMethod('post')) {
             $request->validate([
@@ -22,7 +25,7 @@ class RF_F02Controller extends Controller
             $produtoSelecionado = Produto::with('fornecedor')->find($request->produto_id);
         }
 
-        return view('Vendas.cadastro', compact('produtoSelecionado', 'funcionarios'));
+        return view('Vendas.cadastro', compact('produtoSelecionado', 'funcionarios', 'clientes', 'produtos'));
     }
     public function salvarVenda(Request $request)
     {
@@ -47,8 +50,11 @@ class RF_F02Controller extends Controller
         Venda::create([
             'produto_id' => $produto->id,
             'funcionario_id' => $request->funcionario_id,
+            'cliente_id' => $request->cliente_id ?? null,
             'quantidade' => $request->quantidade,
             'preco_total' => $precoTotal,
+            'forma_pagamento' => $request->forma_pagamento ?? 'Dinheiro',
+            'data_venda' => $request->data_venda ?? now()->format('Y-m-d'),
         ]);
         
         $produto->quantidade -= $request->quantidade;
@@ -102,8 +108,11 @@ class RF_F02Controller extends Controller
                 Venda::create([
                     'produto_id' => $produto->id,
                     'funcionario_id' => $request->input('funcionario_id'),
+                    'cliente_id' => $request->input('cliente_id'),
                     'quantidade' => $produtoData['quantidade'],
                     'preco_total' => $produtoData['preco_total'],
+                    'forma_pagamento' => $request->input('forma_pagamento', 'Dinheiro'),
+                    'data_venda' => $request->input('data_venda', now()->format('Y-m-d')),
                 ]);
                 
                 // Atualizar estoque
@@ -166,6 +175,47 @@ class RF_F02Controller extends Controller
         }
 
         $funcionarios = Funcionario::all();
-        return view('Vendas.cadastro', compact('produtoSelecionado', 'funcionarios'));
+        $clientes = Cliente::all();
+        $produtos = Produto::with('fornecedor')->get();
+        return view('Vendas.cadastro', compact('produtoSelecionado', 'funcionarios', 'clientes', 'produtos'));
+    }
+
+    public function buscarCliente(Request $request)
+    {
+        if ($request->filled('termo')) {
+            $termo = $request->input('termo');
+            $clientes = Cliente::query()
+                ->where('nome', 'like', "%{$termo}%")
+                ->orWhere('documento', 'like', "%{$termo}%")
+                ->orWhere('email', 'like', "%{$termo}%")
+                ->limit(10)
+                ->get()
+                ->map(function ($c) {
+                    return [
+                        'id' => $c->id,
+                        'nome' => $c->nome,
+                        'documento' => $c->documento,
+                        'email' => $c->email
+                    ];
+                });
+            return response()->json(['success' => true, 'resultados' => $clientes]);
+        }
+
+        if ($request->filled('cliente_id')) {
+            $cliente = Cliente::find($request->cliente_id);
+            if ($cliente) {
+                return response()->json([
+                    'success' => true,
+                    'cliente' => [
+                        'id' => $cliente->id,
+                        'nome' => $cliente->nome,
+                        'documento' => $cliente->documento,
+                        'email' => $cliente->email
+                    ]
+                ]);
+            }
+        }
+
+        return response()->json(['success' => false, 'message' => 'Cliente não encontrado']);
     }
 }

@@ -101,17 +101,19 @@
                             <td>{{ \App\Helpers\FormatHelper::formatarTelefone($funcionario->telefone) }}</td>
                             <td>{{ $funcionario->cargo }}</td>
                             <td>R$ {{ number_format($funcionario->salario, 2, ',', '.') }}</td>
-                            <td style="display: flex; gap: 0.5rem;">
-                                <a href="{{ route('Funcionarios.editar', $funcionario->id) }}" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('Funcionarios.excluir', $funcionario->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este funcionário?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ route('Funcionarios.editar', $funcionario->id) }}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('Funcionarios.excluir', $funcionario->id) }}" method="POST" style="display: inline-flex; align-items: center; margin: 0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este funcionário?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -1,8 +1,8 @@
-@extends('layouts.financeiro')
 
-@section('title', 'Vendas')
 
-@section('content')
+<?php $__env->startSection('title', 'Vendas'); ?>
+
+<?php $__env->startSection('content'); ?>
 <style>
     .vendas-container {
         background: white;
@@ -332,9 +332,9 @@
             <label for="funcionario_id">Funcionário</label>
             <select id="funcionario_id" class="form-control">
                 <option value="">Selecione</option>
-                @foreach($funcionarios as $f)
-                    <option value="{{ $f->id }}">{{ $f->nome }}</option>
-                @endforeach
+                <?php $__currentLoopData = $funcionarios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option value="<?php echo e($f->id); ?>"><?php echo e($f->nome); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
         </div>
     </div>
@@ -343,7 +343,7 @@
     <div class="vendas-footer">
         <div class="control-group">
             <label for="dataVenda">Data</label>
-            <input type="date" id="dataVenda" class="form-control" value="{{ date('Y-m-d') }}">
+            <input type="date" id="dataVenda" class="form-control" value="<?php echo e(date('Y-m-d')); ?>">
         </div>
         
         <div class="total-display">
@@ -363,9 +363,9 @@
 
 <!-- Seção do Carrinho (removida - produtos agora aparecem na tabela principal) -->
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script>
 let carrinho = [];
 let produtoSelecionado = null;
@@ -384,7 +384,7 @@ function buscarProduto(termo) {
         return;
     }
     
-    fetch('{{ route("Vendas.buscar") }}', {
+    fetch('<?php echo e(route("Vendas.buscar")); ?>', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -422,7 +422,7 @@ function buscarCliente(termo) {
         return;
     }
     
-    fetch('{{ route("Vendas.buscarCliente") }}', {
+    fetch('<?php echo e(route("Vendas.buscarCliente")); ?>', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -455,7 +455,7 @@ function buscarCliente(termo) {
 }
 
 function selecionarProduto(produtoId) {
-    fetch('{{ route("Vendas.buscar") }}', {
+    fetch('<?php echo e(route("Vendas.buscar")); ?>', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -478,7 +478,7 @@ function selecionarProduto(produtoId) {
 }
 
 function selecionarCliente(clienteId) {
-    fetch('{{ route("Vendas.buscarCliente") }}', {
+    fetch('<?php echo e(route("Vendas.buscarCliente")); ?>', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -654,7 +654,7 @@ function finalizarVenda() {
             preco_total: item.total
         }));
         
-        fetch('{{ route("Vendas.salvar") }}', {
+        fetch('<?php echo e(route("Vendas.salvar")); ?>', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -715,4 +715,6 @@ document.addEventListener('DOMContentLoaded', function() {
     atualizarTabelaProdutos();
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.financeiro', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Vendas/cadastro.blade.php ENDPATH**/ ?>

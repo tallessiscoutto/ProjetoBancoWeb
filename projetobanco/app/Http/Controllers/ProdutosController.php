@@ -12,7 +12,18 @@ class ProdutosController extends Controller
     {
         $produtos = Produto::with('fornecedor')->get();
         $fornecedores = Fornecedor::all();
-        return view('Produtos.cadastro', compact('produtos', 'fornecedores'));
+        
+        // Estatísticas para dashboard
+        $stats = [
+            'total' => $produtos->count(),
+            'estoque_baixo' => $produtos->where('quantidade', '<', 10)->count(),
+            'sem_estoque' => $produtos->where('quantidade', '<=', 0)->count(),
+            'valor_total' => $produtos->sum(function($p) {
+                return $p->preco * $p->quantidade;
+            }),
+        ];
+        
+        return view('Produtos.cadastro', compact('produtos', 'fornecedores', 'stats'));
     }
 
     public function visualizar(Request $request)
@@ -130,6 +141,12 @@ class ProdutosController extends Controller
         ->get();
 
     return view('locacao.index', compact('produtos', 'busca'));
+    }
+
+    public function show($id)
+    {
+        $produto = Produto::with('fornecedor')->findOrFail($id);
+        return response()->json($produto);
     }
 
 } 

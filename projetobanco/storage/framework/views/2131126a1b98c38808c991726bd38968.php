@@ -88,17 +88,19 @@
                             <td><?php echo e($fornecedor->endereco); ?></td>
                             <td><?php echo e($fornecedor->produtos_disponiveis); ?></td>
                             <td><?php echo e($fornecedor->formas_pagamento); ?></td>
-                            <td style="display: flex; gap: 0.5rem;">
-                                <a href="<?php echo e(route('Fornecedores.editar', $fornecedor->id)); ?>" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="<?php echo e(route('Fornecedores.excluir', $fornecedor->id)); ?>" method="POST" style="display: inline;">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('DELETE'); ?>
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="<?php echo e(route('Fornecedores.editar', $fornecedor->id)); ?>" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="<?php echo e(route('Fornecedores.excluir', $fornecedor->id)); ?>" method="POST" style="display: inline-flex; align-items: center; margin: 0;">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -87,17 +87,19 @@
                             <td>{{ $fornecedor->endereco }}</td>
                             <td>{{ $fornecedor->produtos_disponiveis }}</td>
                             <td>{{ $fornecedor->formas_pagamento }}</td>
-                            <td style="display: flex; gap: 0.5rem;">
-                                <a href="{{ route('Fornecedores.editar', $fornecedor->id) }}" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('Fornecedores.excluir', $fornecedor->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ route('Fornecedores.editar', $fornecedor->id) }}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('Fornecedores.excluir', $fornecedor->id) }}" method="POST" style="display: inline-flex; align-items: center; margin: 0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

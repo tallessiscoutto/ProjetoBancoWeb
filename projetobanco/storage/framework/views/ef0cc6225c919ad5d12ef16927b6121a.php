@@ -1,8 +1,8 @@
-@extends('layouts.financeiro')
 
-@section('title', 'Gestão de Compras')
 
-@section('content')
+<?php $__env->startSection('title', 'Gestão de Compras'); ?>
+
+<?php $__env->startSection('content'); ?>
 <div class="row">
     <div class="col-md-4">
         <div class="card">
@@ -10,28 +10,29 @@
                 <h4 class="mb-0">Nova Compra</h4>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('Compras.salvar') }}" id="formCompra">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('Compras.salvar')); ?>" id="formCompra">
+                    <?php echo csrf_field(); ?>
                     <div class="mb-3">
                         <label for="funcionario_id" class="form-label">Funcionário Responsável</label>
                         <select name="funcionario_id" id="funcionario_id" class="form-select" required>
                             <option value="">Selecione um Funcionário</option>
-                            @isset($funcionarios)
-                                @foreach($funcionarios as $f)
-                                    <option value="{{ $f->id }}">{{ $f->nome }}</option>
-                                @endforeach
-                            @endisset
+                            <?php if(isset($funcionarios)): ?>
+                                <?php $__currentLoopData = $funcionarios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($f->id); ?>"><?php echo e($f->nome); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="produto_id" class="form-label">Produto</label>
                         <select name="produto_id" id="produto_id" class="form-select" required>
                             <option value="">Selecione um Produto</option>
-                            @foreach($produtos as $produto)
-                                <option value="{{ $produto->id }}" data-preco="{{ $produto->preco }}">
-                                    {{ $produto->nome }}
+                            <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($produto->id); ?>" data-preco="<?php echo e($produto->preco); ?>">
+                                    <?php echo e($produto->nome); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
@@ -55,7 +56,7 @@
                         <label for="data_compra" class="form-label">Data da Compra</label>
                         <input type="date" name="data_compra" id="data_compra" 
                             class="form-control" required
-                            value="{{ date('Y-m-d') }}">
+                            value="<?php echo e(date('Y-m-d')); ?>">
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">
@@ -86,24 +87,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($compras as $compra)
+                            <?php $__currentLoopData = $compras; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $compra): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
-                                    <td>{{ $compra->id }}</td>
-                                    <td>{{ $compra->produto->nome }}</td>
-                                    <td>{{ optional($compra->funcionario)->nome ?? '—' }}</td>
-                                    <td>{{ $compra->quantidade }}</td>
-                                    <td>R$ {{ number_format($compra->preco_total, 2, ',', '.') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($compra->data_compra)->format('d/m/Y') }}</td>
+                                    <td><?php echo e($compra->id); ?></td>
+                                    <td><?php echo e($compra->produto->nome); ?></td>
+                                    <td><?php echo e(optional($compra->funcionario)->nome ?? '—'); ?></td>
+                                    <td><?php echo e($compra->quantidade); ?></td>
+                                    <td>R$ <?php echo e(number_format($compra->preco_total, 2, ',', '.')); ?></td>
+                                    <td><?php echo e(\Carbon\Carbon::parse($compra->data_compra)->format('d/m/Y')); ?></td>
                                     <td>
                                         <div class="table-actions">
-                                            <a href="{{ route('Compras.editar', $compra->id) }}" 
+                                            <a href="<?php echo e(route('Compras.editar', $compra->id)); ?>" 
                                                 class="btn btn-warning">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ route('Compras.excluir', $compra->id) }}" 
+                                            <form action="<?php echo e(route('Compras.excluir', $compra->id)); ?>" 
                                                 method="POST" style="display: inline-flex; align-items: center; margin: 0;">
-                                                @csrf
-                                                @method('DELETE')
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
                                                 <button type="submit" class="btn btn-danger"
                                                     onclick="return confirm('Deseja excluir esta compra?')">
                                                     <i class="fas fa-trash"></i>
@@ -112,7 +113,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
@@ -120,9 +121,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script>
 function calcularTotal() {
     const produto = document.getElementById('produto_id');
@@ -157,4 +158,6 @@ $(document).ready(function() {
     $('.money').mask('#.##0,00', {reverse: true});
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.financeiro', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Compras/cadastro.blade.php ENDPATH**/ ?>

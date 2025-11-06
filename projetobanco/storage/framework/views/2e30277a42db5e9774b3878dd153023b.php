@@ -77,17 +77,19 @@
                             <td><?php echo e($cliente->email); ?></td>
                             <td><?php echo e(\App\Helpers\FormatHelper::formatarTelefone($cliente->telefone)); ?></td>
                             <td><?php echo e($cliente->endereco); ?></td>
-                            <td style="display: flex; gap: 0.5rem;">
-                                <a href="<?php echo e(route('Clientes.editar', $cliente->id)); ?>" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="<?php echo e(route('Clientes.excluir', $cliente->id)); ?>" method="POST" style="display: inline;">
-                                    <?php echo csrf_field(); ?>
-                                    <?php echo method_field('DELETE'); ?>
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este cliente?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="<?php echo e(route('Clientes.editar', $cliente->id)); ?>" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="<?php echo e(route('Clientes.excluir', $cliente->id)); ?>" method="POST" style="display: inline-flex; align-items: center; margin: 0;">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este cliente?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

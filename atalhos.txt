@@ -1,18 +1,18 @@
 ADICIONAR
-- função visualizar produtos
-- gerar relatório em excel
-- adicionar campo de foto nos produtos
-- limitar os caracteres das características
-- adicionar dashboards em todas as abas
-- adicionar filtro de buscas nas vendas
-- criar telas de consulta 
-- arrumar marca na pagina de venda
-- adicionar card de funcionários na home
-- selecionar funcionário durante a venda
-- apresentar funcionário no relatório
-- adaptar dashboard para cada função aberta
-- alinhar o botão do acessar pro Higor parar de frescura no rabicó 
-- adicionar funcionário da compra
-- olha a ers e ve como vai ficar a venda e adicionar ai oq a gente decidiu além do protótipo
-- localização
-- reserva
+✅ - função visualizar produtos
+✅ - gerar relatório em excel
+✅ - adicionar campo de foto nos produtos
+✅ - limitar os caracteres das características (maxlength="255")
+✅ - adicionar dashboards em todas as abas (Home e Produtos implementados)
+✅ - adicionar filtro de buscas nas vendas (relatório já tem filtro por produto, funcionário e data)
+✅ - criar telas de consulta (Clientes, Fornecedores, Funcionários já têm)
+✅ - arrumar marca na pagina de venda
+✅ - adicionar card de funcionários na home
+✅ - selecionar funcionário durante a venda
+✅ - apresentar funcionário no relatório
+✅ - adaptar dashboard para cada função aberta (Home e Produtos implementados)
+✅ - alinhar o botão do acessar pro Higor parar de frescura no rabicó 
+✅ - adicionar funcionário da compra
+⏳ - olha a ers e ve como vai ficar a venda e adicionar ai oq a gente decidiu além do protótipo (requer decisão do time)
+✅ - localização
+✅ - reserva
