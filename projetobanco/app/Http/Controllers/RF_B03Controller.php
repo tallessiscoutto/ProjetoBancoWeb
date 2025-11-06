@@ -51,6 +51,22 @@ class RF_B03Controller extends Controller
         return redirect()->route('Funcionarios.cadastro')->with('success', 'Funcionário cadastrado com sucesso!');
     }
 
+    public function ConsultarFuncionarios(Request $request)
+    {
+        $busca = $request->input('q');
+        $query = Funcionario::query();
+        if ($busca) {
+            $query->where(function($q) use ($busca) {
+                $q->where('nome', 'like', "%{$busca}%")
+                  ->orWhere('email', 'like', "%{$busca}%")
+                  ->orWhere('documento', 'like', "%{$busca}%")
+                  ->orWhere('cargo', 'like', "%{$busca}%");
+            });
+        }
+        $funcionarios = $query->orderBy('nome')->paginate(10)->withQueryString();
+        return view('Funcionarios.visualizar', compact('funcionarios', 'busca'));
+    }
+
     public function ListarFuncionario()
     {
         $funcionarios = Funcionario::all();

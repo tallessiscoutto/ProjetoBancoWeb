@@ -1,12 +1,10 @@
-
-
 <?php $__env->startSection('title', 'Cadastro de Produtos'); ?>
 
 <?php $__env->startSection('page-title', 'Cadastro de Produtos'); ?>
 <?php $__env->startSection('page-description', 'Adicione novos produtos ao catálogo'); ?>
 
 <?php $__env->startSection('content'); ?>
-<form action="<?php echo e(route('Produtos.salvar')); ?>" method="POST" class="form">
+<form action="<?php echo e(route('Produtos.salvar')); ?>" method="POST" class="form" enctype="multipart/form-data">
     <?php echo csrf_field(); ?>
     <div class="form-group">
         <label for="nome">Nome do Produto</label>
@@ -14,8 +12,18 @@
     </div>
 
     <div class="form-group">
+        <label for="marca">Marca</label>
+        <input type="text" class="form-control" id="marca" name="marca">
+    </div>
+
+    <div class="form-group">
         <label for="descricao">Descrição</label>
-        <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+        <textarea class="form-control" id="descricao" name="descricao" rows="3" maxlength="255"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="foto">Foto do Produto</label>
+        <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+        <small class="text-muted">Formatos: JPG, PNG, WEBP. Tamanho máx: 2MB.</small>
     </div>
     <div class="form-group">
         <label for="preco">Preço</label>
@@ -26,7 +34,10 @@
         <label for="quantidade">Quantidade em Estoque</label>
         <input type="number" class="form-control" id="quantidade" name="quantidade" required>
     </div>
-
+    <div class="mb-3">
+        <label for="localizacao" class="form-label">Localização (Ex: Estante A / Prateleira 3)</label>
+        <input type="text" name="localizacao" id="localizacao" class="form-control">
+    </div>
     <div class="form-group">
         <label for="fornecedor_id">Fornecedor</label>
         <select class="form-control" id="fornecedor_id" name="fornecedor_id" required>
@@ -67,6 +78,8 @@
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Marca</th>
+                <th>Foto</th>
                 <th>Preço</th>
                 <th>Quantidade</th>
                 <th>Fornecedor</th>
@@ -77,12 +90,23 @@
             <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td><?php echo e($produto->nome); ?></td>
+                <td><?php echo e($produto->marca ?? '—'); ?></td>
+                <td>
+                    <?php if(!empty($produto->foto)): ?>
+                        <img src="<?php echo e(asset('storage/' . $produto->foto)); ?>" alt="<?php echo e($produto->nome); ?>" style="width:48px;height:48px;object-fit:cover;border-radius:6px;">
+                    <?php else: ?>
+                        <span class="text-muted">—</span>
+                    <?php endif; ?>
+                </td>
                 <td>R$ <?php echo e(number_format($produto->preco, 2, ',', '.')); ?></td>
                 <td><?php echo e($produto->quantidade); ?></td>
                 <td><?php echo e($produto->fornecedor->nome); ?></td>
                 <td style="display: flex; gap: 0.5rem;">
                     <a href="<?php echo e(route('Produtos.editar', $produto->id)); ?>" class="btn btn-primary">
                         <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="<?php echo e(route('Produtos.visualizar', $produto->id)); ?>" class="btn btn-info">
+                        <i class="fas fa-eye"></i>
                     </a>
                     <form action="<?php echo e(route('Produtos.excluir', $produto->id)); ?>" method="POST" style="display: inline;">
                         <?php echo csrf_field(); ?>
@@ -91,6 +115,7 @@
                             onclick="return confirm('Tem certeza que deseja excluir este produto?')">
                             <i class="fas fa-trash"></i>
                         </button>
+
                     </form>
                 </td>
             </tr>

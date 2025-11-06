@@ -11,17 +11,28 @@
                 <h4 class="mb-0">Buscar Produto</h4>
             </div>
             <div class="card-body">
+                <div class="mb-3">
+                    <label for="funcionario_id" class="form-label">Funcionário Responsável</label>
+                    <select id="funcionario_id" class="form-control">
+                        <option value="">Selecione</option>
+                        @isset($funcionarios)
+                            @foreach($funcionarios as $f)
+                                <option value="{{ $f->id }}">{{ $f->nome }}</option>
+                            @endforeach
+                        @endisset
+                    </select>
+                </div>
                 <form id="buscarProdutoForm" class="mb-4">
                     @csrf
                     <div class="row align-items-end">
                         <div class="col-md-8">
-                            <label for="produto_id" class="form-label">ID do Produto</label>
-                            <input type="number" name="produto_id" id="produto_id" class="form-control" required>
+                            <label for="campoBusca" class="form-label">Buscar Produto (nome ou código)</label>
+                            <input type="text" id="campoBusca" class="form-control" placeholder="Ex.: Shampoo ou 123">
+                            <div id="sugestoes" class="list-group" style="position:absolute; z-index: 10; width: 100%; display:none;"></div>
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-search me-2"></i>Buscar
-                            </button>
+                            <label for="produto_id" class="form-label">Código</label>
+                            <input type="number" name="produto_id" id="produto_id" class="form-control" placeholder="Opcional">
                         </div>
                     </div>
                 </form>
@@ -117,6 +128,7 @@
 // Variáveis globais
 let carrinho = [];
 let produtoAtual = null;
+let funcionarioSelecionado = '';
 
 // Função para formatar moeda
 function formatarMoeda(valor) {
@@ -166,6 +178,47 @@ function buscarProduto(produtoId) {
         console.error('Erro:', error);
         alert('Erro ao buscar produto!');
     });
+}
+
+function buscarSugestoes(termo) {
+    if (!termo || termo.length < 2) {
+        document.getElementById('sugestoes').style.display = 'none';
+        document.getElementById('sugestoes').innerHTML = '';
+        return;
+    }
+
+    fetch('{{ route("Vendas.buscar") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `termo=${encodeURIComponent(termo)}`
+    })
+    .then(r => r.json())
+    .then(data => {
+        const box = document.getElementById('sugestoes');
+        box.innerHTML = '';
+        if (data.success && data.resultados && data.resultados.length) {
+            data.resultados.forEach(item => {
+                const a = document.createElement('a');
+                a.href = 'javascript:void(0)';
+                a.className = 'list-group-item list-group-item-action';
+                a.textContent = `#${item.id} · ${item.nome} (${item.marca || 'Sem marca'}) - R$ ${formatarMoeda(parseFloat(item.preco))}`;
+                a.onclick = () => {
+                    document.getElementById('sugestoes').style.display = 'none';
+                    document.getElementById('campoBusca').value = '';
+                    buscarProduto(item.id);
+                };
+                box.appendChild(a);
+            });
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    })
+    .catch(() => {});
 }
 
 // Função para adicionar produto ao carrinho
@@ -265,6 +318,11 @@ function finalizarVenda() {
         alert('Adicione pelo menos um produto ao carrinho!');
         return;
     }
+    const funcId = document.getElementById('funcionario_id').value;
+    if (!funcId) {
+        alert('Selecione o funcionário responsável pela venda.');
+        return;
+    }
     
     if (confirm('Deseja finalizar esta venda?')) {
         // Preparar dados para envio
@@ -281,7 +339,7 @@ function finalizarVenda() {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             },
-            body: JSON.stringify({ produtos: dadosVenda })
+            body: JSON.stringify({ produtos: dadosVenda, funcionario_id: funcId })
         })
         .then(response => response.json())
         .then(data => {
@@ -303,12 +361,22 @@ function finalizarVenda() {
 
 // Event listeners
 $(document).ready(function() {
-    // Buscar produto
+    // Buscar produto por código
     document.getElementById('buscarProdutoForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const produtoId = document.getElementById('produto_id').value;
         if (produtoId) {
             buscarProduto(produtoId);
+        }
+    });
+
+    // Buscar produto por nome com sugestões
+    document.getElementById('campoBusca').addEventListener('input', function(e) {
+        buscarSugestoes(e.target.value);
+    });
+    document.addEventListener('click', function(e) {
+        if (!document.getElementById('sugestoes').contains(e.target)) {
+            document.getElementById('sugestoes').style.display = 'none';
         }
     });
     

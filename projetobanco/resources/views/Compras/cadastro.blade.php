@@ -13,6 +13,17 @@
                 <form method="POST" action="{{ route('Compras.salvar') }}" id="formCompra">
                     @csrf
                     <div class="mb-3">
+                        <label for="funcionario_id" class="form-label">Funcionário Responsável</label>
+                        <select name="funcionario_id" id="funcionario_id" class="form-select" required>
+                            <option value="">Selecione um Funcionário</option>
+                            @isset($funcionarios)
+                                @foreach($funcionarios as $f)
+                                    <option value="{{ $f->id }}">{{ $f->nome }}</option>
+                                @endforeach
+                            @endisset
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="produto_id" class="form-label">Produto</label>
                         <select name="produto_id" id="produto_id" class="form-select" required>
                             <option value="">Selecione um Produto</option>
@@ -67,6 +78,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Produto</th>
+                                <th>Funcionário</th>
                                 <th>Quantidade</th>
                                 <th>Preço Total</th>
                                 <th>Data</th>
@@ -78,6 +90,7 @@
                                 <tr>
                                     <td>{{ $compra->id }}</td>
                                     <td>{{ $compra->produto->nome }}</td>
+                                    <td>{{ optional($compra->funcionario)->nome ?? '—' }}</td>
                                     <td>{{ $compra->quantidade }}</td>
                                     <td>R$ {{ number_format($compra->preco_total, 2, ',', '.') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($compra->data_compra)->format('d/m/Y') }}</td>

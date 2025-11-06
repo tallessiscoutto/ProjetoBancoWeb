@@ -8,10 +8,15 @@ class Venda extends Model
 {
     protected $table = 'vendas';
 
-    protected $fillable = ['produto_id', 'quantidade', 'preco_total'];
+    protected $fillable = ['produto_id', 'funcionario_id', 'quantidade', 'preco_total'];
 
     public function produto()
     {
         return $this->belongsTo(Produto::class, 'produto_id');
+    }
+
+    public function funcionario()
+    {
+        return $this->belongsTo(Funcionario::class, 'funcionario_id');
     }
 }

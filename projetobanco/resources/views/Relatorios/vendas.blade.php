@@ -13,9 +13,9 @@
                         <a href="javascript:void(0)" onclick="exportarPDF()" class="btn btn-light" title="Exportar PDF">
                             <i class="fas fa-file-pdf text-danger me-2"></i>PDF
                         </a>
-                        <button class="btn btn-light ms-2" onclick="exportarExcel()" title="Exportar Excel">
+                        <a href="javascript:void(0)" onclick="exportarExcel()" class="btn btn-light ms-2" title="Exportar Excel">
                             <i class="fas fa-file-excel text-success me-2"></i>Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -23,14 +23,14 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
-                            <tr>
+                                <tr>
                                 <th>ID</th>
                                 <th>Produto</th>
                                 <th>Quantidade</th>
                                 <th>Valor Unitário</th>
                                 <th>Valor Total</th>
                                 <th>Data</th>
-                                <th>Status</th>
+                                    <th>Funcionário</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,10 +41,8 @@
                                 <td>{{ $venda->quantidade }}</td>
                                 <td>R$ {{ number_format($venda->produto->preco, 2, ',', '.') }}</td>
                                 <td>R$ {{ number_format($venda->preco_total, 2, ',', '.') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($venda->data_venda)->format('d/m/Y H:i') }}</td>
-                                <td>
-                                    <span class="badge bg-success">Concluída</span>
-                                </td>
+                                <td>{{ optional($venda->created_at)->format('d/m/Y H:i') }}</td>
+                                <td>{{ optional($venda->funcionario)->nome ?? '—' }}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -88,6 +86,14 @@
                                 <form action="{{ route('Relatorios.vendas') }}" method="GET">
                                     <div class="row g-3">
                                         <div class="col-md-6">
+                                            <label for="produto" class="form-label">Produto</label>
+                                            <input type="text" class="form-control" id="produto" name="produto" value="{{ request('produto') }}" placeholder="Nome do produto">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="funcionario" class="form-label">Funcionário</label>
+                                            <input type="text" class="form-control" id="funcionario" name="funcionario" value="{{ request('funcionario') }}" placeholder="Nome do funcionário">
+                                        </div>
+                                        <div class="col-md-6">
                                             <label for="data_inicio" class="form-label">Data Início</label>
                                             <input type="date" class="form-control" id="data_inicio" name="data_inicio">
                                         </div>
@@ -117,12 +123,14 @@
 function exportarPDF() {
     const dataInicio = document.getElementById('data_inicio').value;
     const dataFim = document.getElementById('data_fim').value;
+    const produto = document.getElementById('produto') ? document.getElementById('produto').value : '';
     
     let url = '{{ route('Relatorios.vendas.pdf') }}';
     const params = new URLSearchParams();
     
     if (dataInicio) params.append('data_inicio', dataInicio);
     if (dataFim) params.append('data_fim', dataFim);
+    if (produto) params.append('produto', produto);
     
     if (params.toString()) {
         url += '?' + params.toString();
@@ -132,7 +140,21 @@ function exportarPDF() {
 }
 
 function exportarExcel() {
-    alert('Funcionalidade de exportação para Excel em desenvolvimento');
+    const dataInicio = document.getElementById('data_inicio').value;
+    const dataFim = document.getElementById('data_fim').value;
+    const produto = document.getElementById('produto') ? document.getElementById('produto').value : '';
+
+    let url = '{{ route('Relatorios.vendas.excel') }}';
+    const params = new URLSearchParams();
+    if (dataInicio) params.append('data_inicio', dataInicio);
+    if (dataFim) params.append('data_fim', dataFim);
+    if (produto) params.append('produto', produto);
+
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+
+    window.location.href = url;
 }
 
 $(document).ready(function() {

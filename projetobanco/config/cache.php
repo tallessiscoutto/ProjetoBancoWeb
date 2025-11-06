@@ -50,9 +50,8 @@ return [
         ],
 
         'file' => [
-            'driver' => 'file',
-            'path' => storage_path('framework/cache/data'),
-            'lock_path' => storage_path('framework/cache/data'),
+        'driver' => 'array', // muda o tipo de cache para memória
+        'path' => null,  
         ],
 
         'memcached' => [

@@ -1,27 +1,18 @@
-Funções Básicas
-
-· RF_B01. Cadastro de Produtos: Este recurso permite realizar o cadastro de produtos. 
-Os produtos serão cadastrados por código, nome, marca, quantidade e preço.
-
-· RF_B02. Cadastro de clientes e fornecedores: Nesse modulo será possível realizar o cadastro de clientes e fornecedores. 
-Os clientes serão cadastrados por nome, documentação, endereço, informações gerais. 
-No cadastro de fornecedor, será informado nome, CNPJ, endereço, produtos disponíveis, possíveis formas de pagamento.
-
-· RF_B03. Gerenciar Funcionários: Esse recurso permite que o supervisor possa cadastrar e excluir funcionários. 
-Dados como: foto, documentação, remuneração, cargo e dados gerais.
-
-· RF_B04. Gerenciar Produtos: 
-Este recurso permite que o funcionário consiga registrar, excluir, administrar, consultar e alterar produtos presentes utilizando dados de 
-entrada como: Nome, Foto, Código, Quantidade em estoque, preço de venda e fornecedora, por meio da utilização da função de cadastro de compras.
-
-2.3.2 Funções fundamentais
-· RF_F01. Registrar Compras: Esse recurso se dará por meio do cadastro de informações referentes a compras de novos produtos com o fornecedor. 
-Dados: data, produtos e seus respectivos valores e fornecedores.
-
-· RF_F03. Vendas: por meio deste módulo, o vendedor receberá informações do sistema sobre os produtos disponíveis para venda, informando preço, 
-quantidade disponível de estoque e marca. Por meio deste, será possível realizar o cadastro das vendas realizadas pelo mesmo, informando o produto 
-vendido, a quantidade, seu valor cobrado, o cliente e a forma de pagamento para registro na aba de relatórios.
-·
-2.3.3 Funções de saída
-· RF_S01. Relatórios vendas mensais: nesta aba, será informado o histórico de vendas mensais por meio de uma planilha, 
-apresentando datas e valores de vendas realizadas no mês.
+ADICIONAR
+- função visualizar produtos
+- gerar relatório em excel
+- adicionar campo de foto nos produtos
+- limitar os caracteres das características
+- adicionar dashboards em todas as abas
+- adicionar filtro de buscas nas vendas
+- criar telas de consulta 
+- arrumar marca na pagina de venda
+- adicionar card de funcionários na home
+- selecionar funcionário durante a venda
+- apresentar funcionário no relatório
+- adaptar dashboard para cada função aberta
+- alinhar o botão do acessar pro Higor parar de frescura no rabicó 
+- adicionar funcionário da compra
+- olha a ers e ve como vai ficar a venda e adicionar ai oq a gente decidiu além do protótipo
+- localização
+- reserva

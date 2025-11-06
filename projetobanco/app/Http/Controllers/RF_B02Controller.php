@@ -11,6 +11,19 @@ class RF_B02Controller extends Controller
         $clientes = Cliente::all();
         return view('Clientes.cadastro', compact('clientes'));
     }
+    public function ConsultarClientes(Request $request){
+        $busca = $request->input('q');
+        $query = Cliente::query();
+        if ($busca) {
+            $query->where(function($q) use ($busca) {
+                $q->where('nome', 'like', "%{$busca}%")
+                  ->orWhere('email', 'like', "%{$busca}%")
+                  ->orWhere('documento', 'like', "%{$busca}%");
+            });
+        }
+        $clientes = $query->orderBy('nome')->paginate(10)->withQueryString();
+        return view('Clientes.visualizar', compact('clientes', 'busca'));
+    }
     public function SalvarCliente(Request $request){
         // Limpa as máscaras antes da validação
         $documento = preg_replace('/[^0-9]/', '', $request->documento);
@@ -85,6 +98,19 @@ class RF_B02Controller extends Controller
     public function CadastrarFornecedor(){
         $fornecedores = Fornecedor::all();
         return view('Fornecedores.cadastro', compact('fornecedores'));
+    }
+    public function ConsultarFornecedores(Request $request){
+        $busca = $request->input('q');
+        $query = Fornecedor::query();
+        if ($busca) {
+            $query->where(function($q) use ($busca) {
+                $q->where('nome', 'like', "%{$busca}%")
+                  ->orWhere('email', 'like', "%{$busca}%")
+                  ->orWhere('documento', 'like', "%{$busca}%");
+            });
+        }
+        $fornecedores = $query->orderBy('nome')->paginate(10)->withQueryString();
+        return view('Fornecedores.visualizar', compact('fornecedores', 'busca'));
     }
     public function SalvarFornecedor(Request $request){
         // Limpa as máscaras antes da validação

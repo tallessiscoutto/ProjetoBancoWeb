@@ -101,6 +101,15 @@
             @method('PUT')
             <label for="produto_id">Produto:</label>
             <select name="produto_id" id="produto_id" required>
+            <label for="funcionario_id">Funcionário:</label>
+            <select name="funcionario_id" id="funcionario_id" required>
+                <option value="">Selecione um Funcionário</option>
+                @foreach($funcionarios as $f)
+                <option value="{{ $f->id }}" {{ $compra->funcionario_id == $f->id ? 'selected' : '' }}>
+                    {{ $f->nome }}
+                </option>
+                @endforeach
+            </select>
                 <option value="">Selecione um Produto</option>
                 @foreach($produtos as $produto)
                 <option value="{{ $produto->id }}" {{ $compra->produto_id == $produto->id ? 'selected' : '' }}>

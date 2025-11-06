@@ -120,6 +120,9 @@
         padding: 1.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 
     .card:hover {
@@ -159,6 +162,7 @@
         text-decoration: none;
         font-weight: 500;
         font-size: 0.9rem;
+        margin-top: auto;
     }
 
     .card-link i {
@@ -218,14 +222,7 @@
         <div class="sidebar-header">
             <h1>Perfumes da Chiquinha</h1>
         </div>
-
         <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="<?php echo e(route('home')); ?>" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    Dashboard
-                </a>
-            </li>
             <li class="nav-item">
                 <a href="<?php echo e(route('Produtos.cadastro')); ?>" class="nav-link">
                     <i class="fas fa-box"></i>
@@ -266,6 +263,18 @@
                 <a href="<?php echo e(route('Relatorios.vendas')); ?>" class="nav-link">
                     <i class="fas fa-chart-bar"></i>
                     Relatórios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo e(route('Localizacao.index')); ?>" class="nav-link">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Localização de Produtos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo e(route('Reservas.cadastro')); ?>" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    Reservas
                 </a>
             </li>
         </ul>
@@ -342,12 +351,45 @@
             </div>
 
             <div class="card">
+                <div class="card-icon" style="background: #16a085">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3 class="card-title">Funcionários</h3>
+                <p class="card-description">Cadastre e gerencie funcionários</p>
+                <a href="<?php echo e(route('Funcionarios.cadastro')); ?>" class="card-link">
+                    Acessar <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="card">
                 <div class="card-icon" style="background: #8e44ad">
                     <i class="fas fa-chart-bar"></i>
                 </div>
                 <h3 class="card-title">Relatórios</h3>
                 <p class="card-description">Visualize relatórios e estatísticas</p>
                 <a href="<?php echo e(route('Relatorios.vendas')); ?>" class="card-link">
+                    Acessar <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon" style="background: #2ecc71">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+                <h3 class="card-title">Reservas</h3>
+                <p class="card-description">Gerencie reservas de produtos</p>
+                <a href="<?php echo e(route('Reservas.cadastro')); ?>" class="card-link">
+                    Acessar <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-icon" style="background: #d35400">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3 class="card-title">Localização de Produtos</h3>
+                <p class="card-description">localização de produtos no estoque</p>
+                <a href="<?php echo e(route('Localizacao.index')); ?>" class="card-link">
                     Acessar <i class="fas fa-arrow-right"></i>
                 </a>
             </div>

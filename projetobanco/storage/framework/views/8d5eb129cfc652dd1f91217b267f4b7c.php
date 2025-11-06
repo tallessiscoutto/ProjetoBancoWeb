@@ -1,4 +1,6 @@
-<?php $__env->startSection('title', 'Cadastro de Funcionários'); ?>
+
+
+<?php $__env->startSection('title', 'Cadastrar Funcionário'); ?>
 
 <?php $__env->startSection('page-title', 'Cadastro de Funcionários'); ?>
 <?php $__env->startSection('page-description', 'Gerencie o cadastro de funcionários'); ?>
@@ -41,8 +43,8 @@
 
         <div class="form-group">
             <label for="telefone">Telefone</label>
-            <input type="tel" class="form-control" id="telefone" name="telefone" value="<?php echo e(old('telefone')); ?>" maxlength="15" required>
-            <small class="form-text text-muted">Digite apenas números (DDD + número)</small>
+            <input type="text" class="form-control" id="telefone" name="telefone" value="<?php echo e(old('telefone')); ?>" maxlength="15" required>
+            <small class="form-text text-muted">Digite apenas números (10 ou 11 dígitos)</small>
         </div>
 
         <div class="form-group">
@@ -57,13 +59,8 @@
 
         <div class="form-group">
             <label for="salario">Salário</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">R$</span>
-                </div>
-                <input type="text" class="form-control" id="salario" name="salario" value="<?php echo e(old('salario')); ?>" required>
-            </div>
-            <small class="form-text text-muted">Digite o valor sem pontos, usando vírgula para decimais (ex: 1234,56)</small>
+            <input type="text" class="form-control" id="salario" name="salario" value="<?php echo e(old('salario')); ?>" required>
+            <small class="form-text text-muted">Digite o valor sem pontos ou vírgulas</small>
         </div>
 
         <div class="form-group">
@@ -72,10 +69,7 @@
         </div>
 
         <div style="display: flex; gap: 1rem;">
-            <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i>
-                Salvar Funcionário
-            </button>
+            <button type="submit" class="btn btn-primary">Cadastrar Funcionário</button>
             
             <a href="<?php echo e(route('home')); ?>" class="btn btn-primary">
                 <i class="fas fa-arrow-left"></i>
@@ -103,9 +97,9 @@
                     <?php $__currentLoopData = $funcionarios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $funcionario): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td><?php echo e($funcionario->nome); ?></td>
-                            <td><?php echo e(formatarDocumento($funcionario->documento)); ?></td>
+                            <td><?php echo e(\App\Helpers\FormatHelper::formatarDocumento($funcionario->documento)); ?></td>
                             <td><?php echo e($funcionario->email); ?></td>
-                            <td><?php echo e(formatarTelefone($funcionario->telefone)); ?></td>
+                            <td><?php echo e(\App\Helpers\FormatHelper::formatarTelefone($funcionario->telefone)); ?></td>
                             <td><?php echo e($funcionario->cargo); ?></td>
                             <td>R$ <?php echo e(number_format($funcionario->salario, 2, ',', '.')); ?></td>
                             <td style="display: flex; gap: 0.5rem;">
@@ -174,24 +168,4 @@
     });
 </script>
 <?php $__env->stopSection(); ?>
-
-<?php
-function formatarDocumento($documento) {
-    $doc = preg_replace('/[^0-9]/', '', $documento);
-    if (strlen($doc) === 11) {
-        return substr($doc, 0, 3) . '.' . substr($doc, 3, 3) . '.' . substr($doc, 6, 3) . '-' . substr($doc, 9);
-    } else {
-        return substr($doc, 0, 2) . '.' . substr($doc, 2, 3) . '.' . substr($doc, 5, 3) . '/' . substr($doc, 8, 4) . '-' . substr($doc, 12);
-    }
-}
-
-function formatarTelefone($telefone) {
-    $tel = preg_replace('/[^0-9]/', '', $telefone);
-    if (strlen($tel) === 11) {
-        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7);
-    } else {
-        return '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 4) . '-' . substr($tel, 6);
-    }
-}
-?>
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Funcionarios/cadastro.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.financeiro', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Funcionarios/cadastro.blade.php ENDPATH**/ ?>

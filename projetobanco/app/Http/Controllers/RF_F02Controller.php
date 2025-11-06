@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Produto;
 use App\Models\Venda;
+use App\Models\Funcionario;
 
 class RF_F02Controller extends Controller
 {
     public function cadastrarVenda(Request $request)
     {
         $produtoSelecionado = null;
+        $funcionarios = Funcionario::all();
 
         if ($request->isMethod('post')) {
             $request->validate([
@@ -20,7 +22,7 @@ class RF_F02Controller extends Controller
             $produtoSelecionado = Produto::with('fornecedor')->find($request->produto_id);
         }
 
-        return view('Vendas.cadastro', compact('produtoSelecionado'));
+        return view('Vendas.cadastro', compact('produtoSelecionado', 'funcionarios'));
     }
     public function salvarVenda(Request $request)
     {
@@ -33,6 +35,7 @@ class RF_F02Controller extends Controller
         $request->validate([
             'produto_id' => 'required|exists:Produtos,id',
             'quantidade' => 'required|integer|min:1',
+            'funcionario_id' => 'required|exists:funcionarios,id',
         ]);
         
         $produto = Produto::find($request->produto_id);
@@ -43,6 +46,7 @@ class RF_F02Controller extends Controller
         $precoTotal = $produto->preco * $request->quantidade;
         Venda::create([
             'produto_id' => $produto->id,
+            'funcionario_id' => $request->funcionario_id,
             'quantidade' => $request->quantidade,
             'preco_total' => $precoTotal,
         ]);
@@ -97,6 +101,7 @@ class RF_F02Controller extends Controller
                 // Criar registro de venda
                 Venda::create([
                     'produto_id' => $produto->id,
+                    'funcionario_id' => $request->input('funcionario_id'),
                     'quantidade' => $produtoData['quantidade'],
                     'preco_total' => $produtoData['preco_total'],
                 ]);
@@ -120,26 +125,47 @@ class RF_F02Controller extends Controller
     }
     public function buscarProduto(Request $request)
     {
+        // Duplo modo: busca por termo (lista) ou produto_id (detalhe)
+        if ($request->filled('termo')) {
+            $termo = $request->input('termo');
+            $produtos = Produto::query()
+                ->with('fornecedor')
+                ->where('nome', 'like', "%{$termo}%")
+                ->orWhere('id', $termo)
+                ->limit(10)
+                ->get()
+                ->map(function ($p) {
+                    return [
+                        'id' => $p->id,
+                        'nome' => $p->nome,
+                        'marca' => $p->marca ?? optional($p->fornecedor)->nome,
+                        'preco' => $p->preco,
+                        'quantidade' => $p->quantidade
+                    ];
+                });
+            return response()->json(['success' => true, 'resultados' => $produtos]);
+        }
+
         $request->validate([
             'produto_id' => 'required|exists:Produtos,id',
         ]);
 
         $produtoSelecionado = Produto::with('fornecedor')->find($request->produto_id);
 
-        // Se for uma requisição AJAX, retornar JSON
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'produto' => [
                     'id' => $produtoSelecionado->id,
                     'nome' => $produtoSelecionado->nome,
-                    'marca' => $produtoSelecionado->fornecedor->nome ?? 'N/A',
+                    'marca' => $produtoSelecionado->marca ?? ($produtoSelecionado->fornecedor->nome ?? 'N/A'),
                     'preco' => $produtoSelecionado->preco,
                     'quantidade' => $produtoSelecionado->quantidade
                 ]
             ]);
         }
 
-        return view('Vendas.cadastro', compact('produtoSelecionado'));
+        $funcionarios = Funcionario::all();
+        return view('Vendas.cadastro', compact('produtoSelecionado', 'funcionarios'));
     }
 }

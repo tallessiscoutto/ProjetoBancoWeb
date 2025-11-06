@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('preco', 10, 2);
             $table->integer('quantidade');
             $table->foreignId('fornecedor_id')->constrained('fornecedores')->onDelete('cascade');
+            $table->string('localizacao')->nullable();
             $table->timestamps();
         });
     }
