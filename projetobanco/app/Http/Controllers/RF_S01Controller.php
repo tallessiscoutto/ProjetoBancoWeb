@@ -68,13 +68,47 @@ class RF_S01Controller extends Controller
         }
 
         $vendas = $query->get();
-        
+
+        // Agrupar por "venda" (aproximação: cliente + funcionário + data_venda + forma_pagamento)
+        $grupos = $vendas->groupBy(function ($v) {
+            $cliente = $v->cliente_id ?? 'sem_cliente';
+            $func = $v->funcionario_id ?? 'sem_funcionario';
+            $data = $v->data_venda ?? optional($v->created_at)->format('Y-m-d');
+            $pag = $v->forma_pagamento ?? 'N/D';
+            return implode('|', [$cliente, $func, $data, $pag]);
+        });
+
+        $gruposDetalhados = $grupos->map(function ($items) {
+            $primeiro = $items->first();
+            return [
+                'cliente' => optional($primeiro->cliente)->nome ?? '—',
+                'funcionario' => optional($primeiro->funcionario)->nome ?? '—',
+                'data_venda' => $primeiro->data_venda ?? optional($primeiro->created_at)->format('Y-m-d'),
+                'forma_pagamento' => $primeiro->forma_pagamento ?? 'N/D',
+                'total_venda' => $items->sum('preco_total'),
+                'itens' => $items->map(function ($v) {
+                    return [
+                        'produto' => optional($v->produto)->nome ?? '—',
+                        'quantidade' => $v->quantidade,
+                        'preco_unitario' => optional($v->produto)->preco ?? 0,
+                        'preco_total' => $v->preco_total,
+                        'id' => $v->id,
+                    ];
+                })->values(),
+            ];
+        })->values();
+
+        $totalGeral = $gruposDetalhados->sum('total_venda');
+        $totalVendas = $gruposDetalhados->count();
+        $maiorVenda = $gruposDetalhados->max('total_venda') ?? 0;
+        $mediaVendas = $totalVendas > 0 ? $totalGeral / $totalVendas : 0;
+
         $pdf = PDF::loadView('Relatorios.vendas_pdf', [
-            'vendas' => $vendas,
-            'total_vendas' => $vendas->count(),
-            'media_vendas' => $vendas->avg('preco_total'),
-            'maior_venda' => $vendas->max('preco_total'),
-            'total_geral' => $vendas->sum('preco_total')
+            'grupos' => $gruposDetalhados,
+            'total_vendas' => $totalVendas,
+            'media_vendas' => $mediaVendas,
+            'maior_venda' => $maiorVenda,
+            'total_geral' => $totalGeral
         ]);
 
         return $pdf->download('relatorio-vendas.pdf');

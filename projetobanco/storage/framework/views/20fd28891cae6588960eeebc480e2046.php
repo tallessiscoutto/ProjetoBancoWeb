@@ -420,30 +420,7 @@
             </div>
         </div>
 
-        <?php if(isset($stats['funcionarios_recentes']) && $stats['funcionarios_recentes']->count() > 0): ?>
-        <div class="funcionarios-card">
-            <h3>
-                <i class="fas fa-user-tie" style="color: #16a085;"></i>
-                Funcionários Recentes
-            </h3>
-            <?php $__currentLoopData = $stats['funcionarios_recentes']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $funcionario): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="funcionario-item">
-                <div class="funcionario-info">
-                    <strong><?php echo e($funcionario->nome); ?></strong>
-                    <small><?php echo e($funcionario->cargo); ?></small>
-                </div>
-                <a href="<?php echo e(route('Funcionarios.cadastro')); ?>" class="btn btn-sm btn-primary">
-                    Ver Detalhes
-                </a>
-            </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            <div style="text-align: center; margin-top: 1rem;">
-                <a href="<?php echo e(route('Funcionarios.cadastro')); ?>" class="card-link">
-                    Ver Todos os Funcionários <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-        <?php endif; ?>
+
         <?php endif; ?>
 
         <div class="cards-grid">

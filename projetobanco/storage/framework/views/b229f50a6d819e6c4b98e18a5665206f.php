@@ -55,16 +55,20 @@
 <body>
     <div class="header">
         <h1>Relatório de Vendas</h1>
-        <p>Gerado em {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }}</p>
+        <p>Gerado em <?php echo e(\Carbon\Carbon::now()->format('d/m/Y H:i:s')); ?></p>
     </div>
 
-    @foreach($grupos as $grupo)
+    <?php $__currentLoopData = $grupos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grupo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <h3 style="margin: 10px 0 5px 0;">Venda</h3>
         <p style="margin: 0 0 10px 0;">
-            <strong>Cliente:</strong> {{ $grupo['cliente'] }}
-            &nbsp;|&nbsp; <strong>Funcionário:</strong> {{ $grupo['funcionario'] }}
-            &nbsp;|&nbsp; <strong>Data:</strong> {{ \Carbon\Carbon::parse($grupo['data_venda'])->format('d/m/Y') }}
-            &nbsp;|&nbsp; <strong>Pagamento:</strong> {{ $grupo['forma_pagamento'] }}
+            <strong>Cliente:</strong> <?php echo e($grupo['cliente']); ?>
+
+            &nbsp;|&nbsp; <strong>Funcionário:</strong> <?php echo e($grupo['funcionario']); ?>
+
+            &nbsp;|&nbsp; <strong>Data:</strong> <?php echo e(\Carbon\Carbon::parse($grupo['data_venda'])->format('d/m/Y')); ?>
+
+            &nbsp;|&nbsp; <strong>Pagamento:</strong> <?php echo e($grupo['forma_pagamento']); ?>
+
         </p>
 
         <table>
@@ -78,28 +82,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($grupo['itens'] as $item)
+                <?php $__currentLoopData = $grupo['itens']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                    <td>{{ $item['id'] }}</td>
-                    <td>{{ $item['produto'] }}</td>
-                    <td>{{ $item['quantidade'] }}</td>
-                    <td>R$ {{ number_format($item['preco_unitario'], 2, ',', '.') }}</td>
-                    <td>R$ {{ number_format($item['preco_total'], 2, ',', '.') }}</td>
+                    <td><?php echo e($item['id']); ?></td>
+                    <td><?php echo e($item['produto']); ?></td>
+                    <td><?php echo e($item['quantidade']); ?></td>
+                    <td>R$ <?php echo e(number_format($item['preco_unitario'], 2, ',', '.')); ?></td>
+                    <td>R$ <?php echo e(number_format($item['preco_total'], 2, ',', '.')); ?></td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <tr class="total-row">
                     <td colspan="4" style="text-align: right"><strong>Subtotal da Venda:</strong></td>
-                    <td><strong>R$ {{ number_format($grupo['total_venda'], 2, ',', '.') }}</strong></td>
+                    <td><strong>R$ <?php echo e(number_format($grupo['total_venda'], 2, ',', '.')); ?></strong></td>
                 </tr>
             </tbody>
         </table>
-    @endforeach
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
     <table>
         <tbody>
             <tr class="total-row">
                 <td colspan="4" style="text-align: right"><strong>Total Geral:</strong></td>
-                <td><strong>R$ {{ number_format($total_geral, 2, ',', '.') }}</strong></td>
+                <td><strong>R$ <?php echo e(number_format($total_geral, 2, ',', '.')); ?></strong></td>
             </tr>
         </tbody>
     </table>
@@ -107,14 +111,17 @@
     <div class="resumo">
         <h2>Resumo do Período</h2>
         <div class="resumo-item">
-            <strong>Total de Vendas:</strong> {{ $total_vendas }}
+            <strong>Total de Vendas:</strong> <?php echo e($total_vendas); ?>
+
         </div>
         <div class="resumo-item">
-            <strong>Média por Venda:</strong> R$ {{ number_format($media_vendas, 2, ',', '.') }}
+            <strong>Média por Venda:</strong> R$ <?php echo e(number_format($media_vendas, 2, ',', '.')); ?>
+
         </div>
         <div class="resumo-item">
-            <strong>Maior Venda:</strong> R$ {{ number_format($maior_venda, 2, ',', '.') }}
+            <strong>Maior Venda:</strong> R$ <?php echo e(number_format($maior_venda, 2, ',', '.')); ?>
+
         </div>
     </div>
 </body>
-</html> 
+</html> <?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Relatorios/vendas_pdf.blade.php ENDPATH**/ ?>

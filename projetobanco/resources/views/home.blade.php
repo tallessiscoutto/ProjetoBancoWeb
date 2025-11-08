@@ -420,30 +420,7 @@
             </div>
         </div>
 
-        @if(isset($stats['funcionarios_recentes']) && $stats['funcionarios_recentes']->count() > 0)
-        <div class="funcionarios-card">
-            <h3>
-                <i class="fas fa-user-tie" style="color: #16a085;"></i>
-                Funcionários Recentes
-            </h3>
-            @foreach($stats['funcionarios_recentes'] as $funcionario)
-            <div class="funcionario-item">
-                <div class="funcionario-info">
-                    <strong>{{ $funcionario->nome }}</strong>
-                    <small>{{ $funcionario->cargo }}</small>
-                </div>
-                <a href="{{ route('Funcionarios.cadastro') }}" class="btn btn-sm btn-primary">
-                    Ver Detalhes
-                </a>
-            </div>
-            @endforeach
-            <div style="text-align: center; margin-top: 1rem;">
-                <a href="{{ route('Funcionarios.cadastro') }}" class="card-link">
-                    Ver Todos os Funcionários <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-        @endif
+
         @endisset
 
         <div class="cards-grid">

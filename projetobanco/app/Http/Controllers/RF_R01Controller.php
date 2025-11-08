@@ -13,6 +13,11 @@ class RF_R01Controller extends Controller
         $produtos = Produto::orderBy('nome')->get();
         $clientes = Cliente::orderBy('nome')->get();
 
+        // Pré-seleções vindas da tela de Vendas
+        $produtoSelecionadoId = $request->input('produto_id');
+        $clienteSelecionadoId = $request->input('cliente_id');
+        $quantidadeSugerida = $request->input('quantidade');
+
         $query = Reserva::with(['produto','cliente']);
         if ($request->filled('cliente')) {
             $termo = $request->input('cliente');
@@ -37,7 +42,14 @@ class RF_R01Controller extends Controller
         }
 
         $reservas = $query->orderByDesc('id')->paginate(10)->withQueryString();
-        return view('Reservas.cadastro', compact('produtos','clientes','reservas'));
+        return view('Reservas.cadastro', compact(
+            'produtos',
+            'clientes',
+            'reservas',
+            'produtoSelecionadoId',
+            'clienteSelecionadoId',
+            'quantidadeSugerida'
+        ));
     }
 
     public function salvarReserva(Request $request)

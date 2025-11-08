@@ -15,7 +15,7 @@
                         <select class="form-select" id="cliente_id" name="cliente_id" required>
                             <option value="">Selecione</option>
                             @foreach($clientes as $c)
-                                <option value="{{ $c->id }}">{{ $c->nome }}</option>
+                                <option value="{{ $c->id }}" {{ (int)old('cliente_id', $clienteSelecionadoId ?? request('cliente_id')) === $c->id ? 'selected' : '' }}>{{ $c->nome }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -24,13 +24,13 @@
                         <select class="form-select" id="produto_id" name="produto_id" required>
                             <option value="">Selecione</option>
                             @foreach($produtos as $p)
-                                <option value="{{ $p->id }}">#{{ $p->id }} · {{ $p->nome }} (Estoque: {{ $p->quantidade }})</option>
+                                <option value="{{ $p->id }}" {{ (int)old('produto_id', $produtoSelecionadoId ?? request('produto_id')) === $p->id ? 'selected' : '' }}>#{{ $p->id }} · {{ $p->nome }} (Estoque: {{ $p->quantidade }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="quantidade">Quantidade</label>
-                        <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" required>
+                        <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" value="{{ old('quantidade', $quantidadeSugerida ?? request('quantidade') ?? 1) }}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="data_validade">Validade</label>

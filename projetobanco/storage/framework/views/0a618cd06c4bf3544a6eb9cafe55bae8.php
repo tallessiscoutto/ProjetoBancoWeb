@@ -632,7 +632,19 @@ function reservarItens() {
         alert('Adicione produtos ao carrinho antes de reservar!');
         return;
     }
-    alert('Funcionalidade de reserva será implementada em breve!');
+    // Levar para a tela de reservas com o último produto adicionado pré-selecionado
+    const item = carrinho[carrinho.length - 1];
+    const produtoId = item.id;
+    const quantidade = item.quantidade || 1;
+    const clienteId = clienteSelecionado ? clienteSelecionado.id : '';
+
+    let url = '<?php echo e(route('Reservas.cadastro')); ?>';
+    const params = new URLSearchParams();
+    params.append('produto_id', produtoId);
+    params.append('quantidade', quantidade);
+    if (clienteId) params.append('cliente_id', clienteId);
+
+    window.location.href = url + '?' + params.toString();
 }
 
 function finalizarVenda() {

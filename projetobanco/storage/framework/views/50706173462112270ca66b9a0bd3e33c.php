@@ -15,7 +15,7 @@
                         <select class="form-select" id="cliente_id" name="cliente_id" required>
                             <option value="">Selecione</option>
                             <?php $__currentLoopData = $clientes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($c->id); ?>"><?php echo e($c->nome); ?></option>
+                                <option value="<?php echo e($c->id); ?>" <?php echo e((int)old('cliente_id', $clienteSelecionadoId ?? request('cliente_id')) === $c->id ? 'selected' : ''); ?>><?php echo e($c->nome); ?></option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
@@ -24,13 +24,13 @@
                         <select class="form-select" id="produto_id" name="produto_id" required>
                             <option value="">Selecione</option>
                             <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($p->id); ?>">#<?php echo e($p->id); ?> · <?php echo e($p->nome); ?> (Estoque: <?php echo e($p->quantidade); ?>)</option>
+                                <option value="<?php echo e($p->id); ?>" <?php echo e((int)old('produto_id', $produtoSelecionadoId ?? request('produto_id')) === $p->id ? 'selected' : ''); ?>>#<?php echo e($p->id); ?> · <?php echo e($p->nome); ?> (Estoque: <?php echo e($p->quantidade); ?>)</option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="quantidade">Quantidade</label>
-                        <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" required>
+                        <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" value="<?php echo e(old('quantidade', $quantidadeSugerida ?? request('quantidade') ?? 1)); ?>" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="data_validade">Validade</label>

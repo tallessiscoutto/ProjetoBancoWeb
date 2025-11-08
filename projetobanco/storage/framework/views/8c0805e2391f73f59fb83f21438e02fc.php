@@ -87,45 +87,47 @@
 <body>
     <div class="container">
         <h2>Editar Compra</h2>
-        @if($errors->any())
+        <?php if($errors->any()): ?>
         <div class="error-messages">
             <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
+                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
         </div>
-        @endif
-        <form method="POST" action="{{ route('Compras.atualizar', $compra->id) }}">
-            @csrf
-            @method('PUT')
+        <?php endif; ?>
+        <form method="POST" action="<?php echo e(route('Compras.atualizar', $compra->id)); ?>">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <label for="produto_id">Produto:</label>
             <select name="produto_id" id="produto_id" required>
                 <option value="">Selecione um Produto</option>
-                @foreach($produtos as $produto)
-                <option value="{{ $produto->id }}" {{ $compra->produto_id == $produto->id ? 'selected' : '' }}>
-                    {{ $produto->nome }}
+                <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($produto->id); ?>" <?php echo e($compra->produto_id == $produto->id ? 'selected' : ''); ?>>
+                    <?php echo e($produto->nome); ?>
+
                 </option>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
             <label for="funcionario_id">Funcionário:</label>
             <select name="funcionario_id" id="funcionario_id" required>
                 <option value="">Selecione um Funcionário</option>
-                @foreach($funcionarios as $f)
-                <option value="{{ $f->id }}" {{ $compra->funcionario_id == $f->id ? 'selected' : '' }}>
-                    {{ $f->nome }}
+                <?php $__currentLoopData = $funcionarios; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $f): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($f->id); ?>" <?php echo e($compra->funcionario_id == $f->id ? 'selected' : ''); ?>>
+                    <?php echo e($f->nome); ?>
+
                 </option>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
             <label for="quantidade">Quantidade:</label>
-            <input type="number" name="quantidade" id="quantidade" value="{{ $compra->quantidade }}" required>
+            <input type="number" name="quantidade" id="quantidade" value="<?php echo e($compra->quantidade); ?>" required>
             <label for="preco_total">Preço Total:</label>
-            <input type="number" name="preco_total" id="preco_total" step="0.01" value="{{ $compra->preco_total }}" required>
+            <input type="number" name="preco_total" id="preco_total" step="0.01" value="<?php echo e($compra->preco_total); ?>" required>
             <label for="data_compra">Data da Compra:</label>
-            <input type="date" name="data_compra" id="data_compra" value="{{ $compra->data_compra }}" required>
+            <input type="date" name="data_compra" id="data_compra" value="<?php echo e($compra->data_compra); ?>" required>
             <button type="submit">Salvar Alterações</button>
         </form>
-        <a href="{{ route('Compras.cadastro') }}" class="voltar">← Voltar ao Cadastro</a>
+        <a href="<?php echo e(route('Compras.cadastro')); ?>" class="voltar">← Voltar ao Cadastro</a>
     </div>
 </body>
-</html>
+</html><?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Compras/editar.blade.php ENDPATH**/ ?>
