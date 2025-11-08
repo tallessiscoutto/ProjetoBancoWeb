@@ -439,6 +439,79 @@
             font-size: 1.5rem;
         }
     }
+
+    /* Correção dos botões de paginação */
+    .pagination {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        list-style: none;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .pagination .page-item {
+        margin: 0 2px;
+    }
+
+    .pagination .page-link {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        text-align: center;
+        min-width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .pagination .page-link:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    /* REMOVER COMPLETAMENTE AS SETAS DA PAGINAÇÃO */
+    ul.pagination li.page-item:first-child,
+    ul.pagination li.page-item:last-child,
+    ul.pagination li.page-item a.page-link[aria-label*="previous"],
+    ul.pagination li.page-item a.page-link[aria-label*="next"],
+    ul.pagination li.page-item a.page-link[rel="prev"],
+    ul.pagination li.page-item a.page-link[rel="next"],
+    ul.pagination li.page-item.disabled span.page-link[aria-label*="previous"],
+    ul.pagination li.page-item.disabled span.page-link[aria-label*="next"],
+    ul.pagination li.page-item.disabled span.page-link[aria-hidden="true"] {
+        display: none !important;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .pagination .page-item.active .page-link {
+        z-index: 3;
+    }
+
+
+    /* Ajustar para mobile */
+    @media (max-width: 576px) {
+        .pagination {
+            justify-content: center;
+        }
+        
+        .pagination .page-item {
+            margin: 2px;
+        }
+        
+        .pagination .page-link {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            min-width: 32px;
+            height: 32px;
+        }
+    }
     </style>
     @yield('styles')
 </head>
@@ -496,6 +569,7 @@
                     });
                 });
             }
+
         });
     </script>
     @yield('scripts')

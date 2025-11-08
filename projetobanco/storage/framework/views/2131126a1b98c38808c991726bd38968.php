@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Cadastrar Fornecedor'); ?>
 
 <?php $__env->startSection('content'); ?>

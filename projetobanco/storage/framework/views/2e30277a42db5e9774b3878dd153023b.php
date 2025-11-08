@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Cadastrar Cliente'); ?>
 
 <?php $__env->startSection('page-title', 'Cadastro de Clientes'); ?>

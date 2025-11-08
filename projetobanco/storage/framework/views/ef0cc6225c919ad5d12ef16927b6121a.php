@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Gestão de Compras'); ?>
 
 <?php $__env->startSection('content'); ?>

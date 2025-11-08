@@ -210,4 +210,30 @@
         background-color: white !important;
         border: 1px solid #ddd !important;
     }
+}
+
+/* REMOVER COMPLETAMENTE AS SETAS DA PAGINAÇÃO - FORÇAR */
+nav ul.pagination li.page-item:first-child,
+nav ul.pagination li.page-item:last-child,
+nav ul.pagination li.page-item a.page-link[aria-label*="previous"],
+nav ul.pagination li.page-item a.page-link[aria-label*="next"],
+nav ul.pagination li.page-item a.page-link[rel="prev"],
+nav ul.pagination li.page-item a.page-link[rel="next"],
+nav ul.pagination li.page-item.disabled span.page-link[aria-label*="previous"],
+nav ul.pagination li.page-item.disabled span.page-link[aria-label*="next"],
+nav ul.pagination li.page-item.disabled span.page-link[aria-hidden="true"],
+.pagination li.page-item:first-child,
+.pagination li.page-item:last-child,
+.pagination .page-link[aria-label*="previous"],
+.pagination .page-link[aria-label*="next"],
+.pagination .page-link[rel="prev"],
+.pagination .page-link[rel="next"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
 } 

@@ -1,18 +1,16 @@
-@extends('layouts.financeiro')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container mt-4">
     <h2 class="mb-4 text-center fw-bold text-primary">📦 Localização de Produtos no Estoque</h2>
 
-    <form action="{{ route('Localizacao.index') }}" method="GET" class="d-flex justify-content-center mb-4">
+    <form action="<?php echo e(route('Localizacao.index')); ?>" method="GET" class="d-flex justify-content-center mb-4">
         <input type="text" name="busca"
             class="form-control w-50 me-2 shadow-sm"
             placeholder="🔍 Buscar por nome ou ID"
-            value="{{ old('busca', $busca ?? '') }}">
+            value="<?php echo e(old('busca', $busca ?? '')); ?>">
         <button type="submit" class="btn btn-primary px-4">Buscar</button>
     </form>
 
-    @if(isset($produtos) && $produtos->count() > 0)
+    <?php if(isset($produtos) && $produtos->count() > 0): ?>
     <div class="table-responsive shadow-sm rounded-3">
         <table class="table table-striped table-hover align-middle text-center">
             <thead class="table-primary">
@@ -23,41 +21,41 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($produtos as $produto)
-                <tr @if(isset($busca) && (stripos($produto->nome, $busca) !== false || $produto->id == $busca))
+                <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $produto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr <?php if(isset($busca) && (stripos($produto->nome, $busca) !== false || $produto->id == $busca)): ?>
                     class="table-info fw-bold"
-                    @endif>
-                    <td>{{ $produto->id }}</td>
-                    <td>{{ $produto->nome }}</td>
-                    <td>{{ $produto->localizacao ?? '-' }}</td>
+                    <?php endif; ?>>
+                    <td><?php echo e($produto->id); ?></td>
+                    <td><?php echo e($produto->nome); ?></td>
+                    <td><?php echo e($produto->localizacao ?? '-'); ?></td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
     </div>
 
     <div class="mt-3 d-flex justify-content-center">
         <div class="d-flex align-items-center gap-2">
-            @if ($produtos->onFirstPage())
+            <?php if($produtos->onFirstPage()): ?>
             <button class="btn btn-secondary" disabled>Anterior</button>
-            @else
-            <a href="{{ $produtos->previousPageUrl() }}" class="btn btn-secondary">Anterior</a>
-            @endif
+            <?php else: ?>
+            <a href="<?php echo e($produtos->previousPageUrl()); ?>" class="btn btn-secondary">Anterior</a>
+            <?php endif; ?>
 
-            <span class="mx-3">Página {{ $produtos->currentPage() }} de {{ $produtos->lastPage() }}</span>
+            <span class="mx-3">Página <?php echo e($produtos->currentPage()); ?> de <?php echo e($produtos->lastPage()); ?></span>
 
-            @if ($produtos->hasMorePages())
-            <a href="{{ $produtos->nextPageUrl() }}" class="btn btn-primary">Próxima</a>
-            @else
+            <?php if($produtos->hasMorePages()): ?>
+            <a href="<?php echo e($produtos->nextPageUrl()); ?>" class="btn btn-primary">Próxima</a>
+            <?php else: ?>
             <button class="btn btn-primary" disabled>Próxima</button>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
-    @elseif(isset($busca))
+    <?php elseif(isset($busca)): ?>
     <div class="alert alert-warning text-center shadow-sm">
-        Nenhum produto encontrado para "<strong>{{ $busca }}</strong>".
+        Nenhum produto encontrado para "<strong><?php echo e($busca); ?></strong>".
     </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <style>
@@ -107,4 +105,5 @@
         margin: 0 !important;
     }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.financeiro', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/localizacao/index.blade.php ENDPATH**/ ?>

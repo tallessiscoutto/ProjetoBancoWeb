@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Cadastrar Funcionário'); ?>
 
 <?php $__env->startSection('page-title', 'Cadastro de Funcionários'); ?>
