@@ -10,6 +10,10 @@
             <div class="card-body">
                 <form method="POST" action="<?php echo e(route('Reservas.salvar')); ?>">
                     <?php echo csrf_field(); ?>
+                    
+                    <?php if(!empty($itensVenda)): ?>
+                        <input type="hidden" name="itens_venda" value="<?php echo e(old('itens_venda', request('itens'))); ?>">
+                    <?php endif; ?>
                     <div class="mb-3">
                         <label class="form-label" for="cliente_id">Cliente</label>
                         <select class="form-select" id="cliente_id" name="cliente_id" required>
@@ -19,19 +23,53 @@
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="produto_id">Produto</label>
-                        <select class="form-select" id="produto_id" name="produto_id" required>
-                            <option value="">Selecione</option>
-                            <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($p->id); ?>" <?php echo e((int)old('produto_id', $produtoSelecionadoId ?? request('produto_id')) === $p->id ? 'selected' : ''); ?>>#<?php echo e($p->id); ?> · <?php echo e($p->nome); ?> (Estoque: <?php echo e($p->quantidade); ?>)</option>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="quantidade">Quantidade</label>
-                        <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" value="<?php echo e(old('quantidade', $quantidadeSugerida ?? request('quantidade') ?? 1)); ?>" required>
-                    </div>
+
+                    <?php if(empty($itensVenda)): ?>
+                        
+                        <div class="mb-3">
+                            <label class="form-label" for="produto_id">Produto</label>
+                            <select class="form-select" id="produto_id" name="produto_id" required>
+                                <option value="">Selecione</option>
+                                <?php $__currentLoopData = $produtos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($p->id); ?>" <?php echo e((int)old('produto_id', $produtoSelecionadoId ?? request('produto_id')) === $p->id ? 'selected' : ''); ?>>#<?php echo e($p->id); ?> · <?php echo e($p->nome); ?> (Estoque: <?php echo e($p->quantidade); ?>)</option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="quantidade">Quantidade</label>
+                            <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" value="<?php echo e(old('quantidade', $quantidadeSugerida ?? request('quantidade') ?? 1)); ?>" required>
+                        </div>
+                    <?php else: ?>
+                        
+                        <div class="mb-3">
+                            <div class="alert alert-info">
+                                Estão sendo importados <strong><?php echo e(count($itensVenda)); ?></strong> produto(s) da tela de vendas.
+                                As reservas serão criadas para todos os itens abaixo usando o mesmo cliente e a mesma validade.
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Produto</th>
+                                            <th>Qtd</th>
+                                            <th>Estoque Atual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $__currentLoopData = $itensVenda; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <tr>
+                                                <td><?php echo e($item['produto_id']); ?></td>
+                                                <td><?php echo e($item['nome']); ?></td>
+                                                <td><?php echo e($item['quantidade']); ?></td>
+                                                <td><?php echo e($item['estoque']); ?></td>
+                                            </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <div class="mb-3">
                         <label class="form-label" for="data_validade">Validade</label>
                         <input class="form-control" type="date" id="data_validade" name="data_validade" required>

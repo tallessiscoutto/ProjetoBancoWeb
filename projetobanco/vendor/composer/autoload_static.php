@@ -49,7 +49,6 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'W' => 
         array (
             'Whoops\\' => 7,
-            'Webmozart\\Assert\\' => 17,
         ),
         'T' => 
         array (
@@ -195,10 +194,6 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Whoops\\' => 
         array (
             0 => __DIR__ . '/..' . '/filp/whoops/src/Whoops',
-        ),
-        'Webmozart\\Assert\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -405,7 +400,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         ),
         'Nette\\' => 
         array (
-            0 => __DIR__ . '/..' . '/nette/utils/src',
+            0 => __DIR__ . '/..' . '/nette/schema/src',
+            1 => __DIR__ . '/..' . '/nette/utils/src',
         ),
         'Monolog\\' => 
         array (
@@ -572,6 +568,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Helpers\\FormatHelper' => __DIR__ . '/../..' . '/app/Helpers/FormatHelper.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\ProdutosController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProdutosController.php',
         'App\\Http\\Controllers\\RF_B01Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_B01Controller.php',
         'App\\Http\\Controllers\\RF_B02Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_B02Controller.php',
@@ -579,7 +576,6 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Controllers\\RF_B04Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_B04Controller.php',
         'App\\Http\\Controllers\\RF_F01Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_F01Controller.php',
         'App\\Http\\Controllers\\RF_F02Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_F02Controller.php',
-        'App\\Http\\Controllers\\RF_L01Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_L01Controller.php',
         'App\\Http\\Controllers\\RF_R01Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_R01Controller.php',
         'App\\Http\\Controllers\\RF_S01Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/RF_S01Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
@@ -722,8 +718,11 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\CategoriaSeeder' => __DIR__ . '/../..' . '/database/seeders/CategoriaSeeder.php',
+        'Database\\Seeders\\ClienteSeeder' => __DIR__ . '/../..' . '/database/seeders/ClienteSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'Database\\Seeders\\FornecedorSeeder' => __DIR__ . '/../..' . '/database/seeders/FornecedorSeeder.php',
+        'Database\\Seeders\\FuncionarioSeeder' => __DIR__ . '/../..' . '/database/seeders/FuncionarioSeeder.php',
+        'Database\\Seeders\\ProdutoSeeder' => __DIR__ . '/../..' . '/database/seeders/ProdutoSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
@@ -6923,7 +6922,6 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'TheSeer\\Tokenizer\\NamespaceUriException' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUriException.php',
         'TheSeer\\Tokenizer\\Token' => __DIR__ . '/..' . '/theseer/tokenizer/src/Token.php',
         'TheSeer\\Tokenizer\\TokenCollection' => __DIR__ . '/..' . '/theseer/tokenizer/src/TokenCollection.php',
-        'TheSeer\\Tokenizer\\TokenCollectionException' => __DIR__ . '/..' . '/theseer/tokenizer/src/TokenCollectionException.php',
         'TheSeer\\Tokenizer\\Tokenizer' => __DIR__ . '/..' . '/theseer/tokenizer/src/Tokenizer.php',
         'TheSeer\\Tokenizer\\XMLSerializer' => __DIR__ . '/..' . '/theseer/tokenizer/src/XMLSerializer.php',
         'TijsVerkoyen\\CssToInlineStyles\\CssToInlineStyles' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/CssToInlineStyles.php',
@@ -6934,9 +6932,6 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
-        'Webmozart\\Assert\\Assert' => __DIR__ . '/..' . '/webmozart/assert/src/Assert.php',
-        'Webmozart\\Assert\\InvalidArgumentException' => __DIR__ . '/..' . '/webmozart/assert/src/InvalidArgumentException.php',
-        'Webmozart\\Assert\\Mixin' => __DIR__ . '/..' . '/webmozart/assert/src/Mixin.php',
         'Whoops\\Exception\\ErrorException' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/ErrorException.php',
         'Whoops\\Exception\\Formatter' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Formatter.php',
         'Whoops\\Exception\\Frame' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Frame.php',

@@ -54,74 +54,139 @@
 </head>
 <body>
     <div class="header">
-        <h1>Relatório de Vendas</h1>
+        <h1>RELATÓRIO MENSAL DE VENDAS</h1>
         <p>Gerado em <?php echo e(\Carbon\Carbon::now()->format('d/m/Y H:i:s')); ?></p>
     </div>
 
-    <?php $__currentLoopData = $grupos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $grupo): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <h3 style="margin: 10px 0 5px 0;">Venda</h3>
-        <p style="margin: 0 0 10px 0;">
-            <strong>Cliente:</strong> <?php echo e($grupo['cliente']); ?>
+    <?php if(!empty($resumo_mensal) && count($resumo_mensal) > 0): ?>
+        
+        <table style="margin-bottom: 30px; border: none;">
+            <tr>
+                <td style="border: none; width: 60%; vertical-align: top;">
+                    <table style="width: 100%; border: none;">
+                        <tr>
+                            <td style="border: none; width: 30%; font-weight: bold;">VENDEDOR / LOJA</td>
+                            <td style="border: none; border-bottom: 1px solid #ccc;">
+                                Perfumes da Chiquinha
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; font-weight: bold; padding-top: 10px;">PERÍODO</td>
+                            <td style="border: none; border-bottom: 1px solid #ccc; padding-top: 10px;">
+                                Relatório consolidado por mês
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="border: none; width: 40%; vertical-align: top;">
+                    <table style="width: 100%; border: none;">
+                        <?php
+                            $valorBrutoGeral = $total_geral;
+                            $impostosGerais = 0; // sistema não possui impostos cadastrados
+                            $valorLiquidoGeral = $valorBrutoGeral - $impostosGerais;
+                        ?>
+                        <tr>
+                            <td style="border: none; text-align: right; font-weight: bold;">VALOR BRUTO</td>
+                            <td style="border: none; text-align: right;">
+                                R$ <?php echo e(number_format($valorBrutoGeral, 2, ',', '.')); ?>
 
-            &nbsp;|&nbsp; <strong>Funcionário:</strong> <?php echo e($grupo['funcionario']); ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; text-align: right; font-weight: bold;">IMPOSTOS</td>
+                            <td style="border: none; text-align: right;">
+                                R$ <?php echo e(number_format($impostosGerais, 2, ',', '.')); ?>
 
-            &nbsp;|&nbsp; <strong>Data:</strong> <?php echo e(\Carbon\Carbon::parse($grupo['data_venda'])->format('d/m/Y')); ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: none; text-align: right; font-weight: bold;">VALOR LÍQUIDO</td>
+                            <td style="border: none; text-align: right;">
+                                R$ <?php echo e(number_format($valorLiquidoGeral, 2, ',', '.')); ?>
 
-            &nbsp;|&nbsp; <strong>Pagamento:</strong> <?php echo e($grupo['forma_pagamento']); ?>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 
-        </p>
-
+        
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Produto</th>
-                    <th>Quantidade</th>
-                    <th>Valor Unitário</th>
-                    <th>Valor Total</th>
+                    <th>MÊS</th>
+                    <th>QTD. VENDAS</th>
+                    <th>VALOR BRUTO</th>
+                    <th>IMPOSTOS</th>
+                    <th>VALOR LÍQUIDO</th>
+                    <th>TOTAL</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $__currentLoopData = $grupo['itens']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <tr>
-                    <td><?php echo e($item['id']); ?></td>
-                    <td><?php echo e($item['produto']); ?></td>
-                    <td><?php echo e($item['quantidade']); ?></td>
-                    <td>R$ <?php echo e(number_format($item['preco_unitario'], 2, ',', '.')); ?></td>
-                    <td>R$ <?php echo e(number_format($item['preco_total'], 2, ',', '.')); ?></td>
-                </tr>
+                <?php
+                    $somaBruto = 0;
+                    $somaImpostos = 0;
+                    $somaLiquido = 0;
+                ?>
+                <?php $__currentLoopData = $resumo_mensal; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $mes): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
+                        $bruto = $mes['valor_bruto'];
+                        $imposto = $mes['valor_bruto'] - $mes['valor_liquido']; // hoje será 0
+                        $liquido = $mes['valor_liquido'];
+                        $somaBruto += $bruto;
+                        $somaImpostos += $imposto;
+                        $somaLiquido += $liquido;
+                    ?>
+                    <tr>
+                        <td><?php echo e($mes['mes']); ?></td>
+                        <td><?php echo e($mes['quantidade_vendas']); ?></td>
+                        <td>R$ <?php echo e(number_format($bruto, 2, ',', '.')); ?></td>
+                        <td>R$ <?php echo e(number_format($imposto, 2, ',', '.')); ?></td>
+                        <td>R$ <?php echo e(number_format($liquido, 2, ',', '.')); ?></td>
+                        <td>R$ <?php echo e(number_format($liquido, 2, ',', '.')); ?></td>
+                    </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <tr class="total-row">
-                    <td colspan="4" style="text-align: right"><strong>Subtotal da Venda:</strong></td>
-                    <td><strong>R$ <?php echo e(number_format($grupo['total_venda'], 2, ',', '.')); ?></strong></td>
+                    <td><strong>TOTAL</strong></td>
+                    <td><strong><?php echo e($total_vendas); ?></strong></td>
+                    <td><strong>R$ <?php echo e(number_format($somaBruto, 2, ',', '.')); ?></strong></td>
+                    <td><strong>R$ <?php echo e(number_format($somaImpostos, 2, ',', '.')); ?></strong></td>
+                    <td><strong>R$ <?php echo e(number_format($somaLiquido, 2, ',', '.')); ?></strong></td>
+                    <td><strong>R$ <?php echo e(number_format($somaLiquido, 2, ',', '.')); ?></strong></td>
                 </tr>
             </tbody>
         </table>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-    <table>
-        <tbody>
-            <tr class="total-row">
-                <td colspan="4" style="text-align: right"><strong>Total Geral:</strong></td>
-                <td><strong>R$ <?php echo e(number_format($total_geral, 2, ',', '.')); ?></strong></td>
-            </tr>
-        </tbody>
-    </table>
+        
+        <div class="resumo">
+            <h2>Informações Importantes</h2>
+            <div class="resumo-item">
+                <strong>Total de Vendas (todas as linhas):</strong> <?php echo e($total_vendas); ?>
 
-    <div class="resumo">
-        <h2>Resumo do Período</h2>
-        <div class="resumo-item">
-            <strong>Total de Vendas:</strong> <?php echo e($total_vendas); ?>
+            </div>
+            <div class="resumo-item">
+                <strong>Média por Venda:</strong> R$ <?php echo e(number_format($media_vendas, 2, ',', '.')); ?>
 
+            </div>
+            <div class="resumo-item">
+                <strong>Maior Venda Individual:</strong> R$ <?php echo e(number_format($maior_venda, 2, ',', '.')); ?>
+
+            </div>
+            <div class="resumo-item">
+                <strong>Total Geral do Período:</strong> R$ <?php echo e(number_format($total_geral, 2, ',', '.')); ?>
+
+            </div>
+
+            <?php if(!empty($melhor_mes)): ?>
+                <div class="resumo-item" style="margin-top: 15px;">
+                    <strong>Melhor mês em faturamento:</strong>
+                    <?php echo e($melhor_mes['mes']); ?> (R$ <?php echo e(number_format($melhor_mes['valor_liquido'], 2, ',', '.')); ?>)
+                </div>
+            <?php endif; ?>
         </div>
-        <div class="resumo-item">
-            <strong>Média por Venda:</strong> R$ <?php echo e(number_format($media_vendas, 2, ',', '.')); ?>
-
-        </div>
-        <div class="resumo-item">
-            <strong>Maior Venda:</strong> R$ <?php echo e(number_format($maior_venda, 2, ',', '.')); ?>
-
-        </div>
-    </div>
+    <?php else: ?>
+        <p>Não há vendas no período selecionado.</p>
+    <?php endif; ?>
 </body>
 </html> <?php /**PATH C:\Users\User\Documents\GitHub\ProjetoBancoWeb\projetobanco\resources\views/Relatorios/vendas_pdf.blade.php ENDPATH**/ ?>

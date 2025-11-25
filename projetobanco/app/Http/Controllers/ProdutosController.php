@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produto;
 use App\Models\Fornecedor;
+use App\Models\Venda;
 use Illuminate\Http\Request;
 
 class ProdutosController extends Controller
@@ -101,6 +102,14 @@ class ProdutosController extends Controller
     public function destroy($id)
     {
         $produto = Produto::findOrFail($id);
+
+        // Impedir exclusão se o produto já foi utilizado em vendas
+        $possuiVendas = Venda::where('produto_id', $produto->id)->exists();
+        if ($possuiVendas) {
+            return redirect()->route('Produtos.cadastro')
+                ->with('error', 'Não é possível excluir este produto, pois ele já está vinculado a uma ou mais vendas.');
+        }
+
         $produto->delete();
 
         return redirect()->route('Produtos.cadastro')

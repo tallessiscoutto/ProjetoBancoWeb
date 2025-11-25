@@ -8,6 +8,7 @@ use App\Models\Venda;
 use App\Models\Produto;
 use App\Models\Funcionario;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class RF_S01Controller extends Controller
 {
@@ -103,12 +104,40 @@ class RF_S01Controller extends Controller
         $maiorVenda = $gruposDetalhados->max('total_venda') ?? 0;
         $mediaVendas = $totalVendas > 0 ? $totalGeral / $totalVendas : 0;
 
+        // Resumo mensal (total de vendas por mês, valor bruto e líquido)
+        $mensal = $vendas->groupBy(function ($v) {
+            $dataBase = $v->data_venda ?? $v->created_at;
+            return $dataBase ? Carbon::parse($dataBase)->format('Y-m') : 'sem_data';
+        });
+
+        $resumoMensal = $mensal->map(function ($items, $chaveMes) {
+            $primeiro = $items->first();
+            $dataRef = $primeiro->data_venda ?? $primeiro->created_at;
+            $mesFormatado = $dataRef
+                ? Carbon::parse($dataRef)->format('m/Y')
+                : 'Sem data';
+
+            $valorBruto = $items->sum('preco_total');
+
+            return [
+                'mes' => $mesFormatado,
+                'quantidade_vendas' => $items->count(),
+                'valor_bruto' => $valorBruto,
+                // Como não há campos de desconto/custo, consideramos valor líquido igual ao bruto
+                'valor_liquido' => $valorBruto,
+            ];
+        })->values();
+
+        $melhorMes = $resumoMensal->sortByDesc('valor_liquido')->first();
+
         $pdf = PDF::loadView('Relatorios.vendas_pdf', [
             'grupos' => $gruposDetalhados,
             'total_vendas' => $totalVendas,
             'media_vendas' => $mediaVendas,
             'maior_venda' => $maiorVenda,
-            'total_geral' => $totalGeral
+            'total_geral' => $totalGeral,
+            'resumo_mensal' => $resumoMensal,
+            'melhor_mes' => $melhorMes,
         ]);
 
         return $pdf->download('relatorio-vendas.pdf');

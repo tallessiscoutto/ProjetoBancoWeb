@@ -53,7 +53,11 @@ class FornecedorSeeder extends Seeder
         ];
 
         foreach ($fornecedores as $fornecedor) {
-            Fornecedor::create($fornecedor);
+            // Usa updateOrCreate para evitar erro de duplicidade ao rodar o seeder mais de uma vez
+            Fornecedor::updateOrCreate(
+                ['documento' => $fornecedor['documento']],
+                $fornecedor
+            );
         }
     }
 }

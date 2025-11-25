@@ -514,6 +514,18 @@ function adicionarAoCarrinho(produto, quantidade) {
     atualizarCarrinho();
     atualizarTotal();
     atualizarTabelaProdutos();
+
+    // Limpar campo de produto e sugestões após adicionar
+    const campoProduto = document.getElementById('campoProduto');
+    if (campoProduto) {
+        campoProduto.value = '';
+        campoProduto.focus();
+    }
+    const sugestoesProduto = document.getElementById('sugestoesProduto');
+    if (sugestoesProduto) {
+        sugestoesProduto.innerHTML = '';
+        sugestoesProduto.style.display = 'none';
+    }
 }
 
 function removerDoCarrinho(produtoId) {
@@ -632,16 +644,24 @@ function reservarItens() {
         alert('Adicione produtos ao carrinho antes de reservar!');
         return;
     }
-    // Levar para a tela de reservas com o último produto adicionado pré-selecionado
-    const item = carrinho[carrinho.length - 1];
-    const produtoId = item.id;
-    const quantidade = item.quantidade || 1;
+
+    // Levar para a tela de reservas com TODOS os itens do carrinho
+    const itens = carrinho.map(item => ({
+        produto_id: item.id,
+        quantidade: item.quantidade || 1,
+    }));
+
+    // Usar o primeiro produto apenas como sugestão inicial nos campos
+    const primeiro = itens[0];
+    const produtoId = primeiro.produto_id;
+    const quantidade = primeiro.quantidade || 1;
     const clienteId = clienteSelecionado ? clienteSelecionado.id : '';
 
     let url = '<?php echo e(route('Reservas.cadastro')); ?>';
     const params = new URLSearchParams();
     params.append('produto_id', produtoId);
     params.append('quantidade', quantidade);
+    params.append('itens', JSON.stringify(itens));
     if (clienteId) params.append('cliente_id', clienteId);
 
     window.location.href = url + '?' + params.toString();

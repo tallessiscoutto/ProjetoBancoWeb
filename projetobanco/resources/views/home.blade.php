@@ -547,6 +547,23 @@
                     });
                 });
             }
+
+            // Deixar todo o card clicável (não apenas o link "Acessar")
+            const cards = document.querySelectorAll('.cards-grid .card');
+            cards.forEach(card => {
+                const link = card.querySelector('.card-link');
+                if (!link) return;
+
+                card.style.cursor = 'pointer';
+
+                card.addEventListener('click', function (e) {
+                    // Se o clique já foi diretamente no link, deixa o comportamento normal
+                    if (e.target.closest('.card-link')) {
+                        return;
+                    }
+                    window.location.href = link.getAttribute('href');
+                });
+            });
         });
     </script>
 </body>

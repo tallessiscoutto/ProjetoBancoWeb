@@ -16,3 +16,7 @@ ADICIONAR
 ⏳ - olha a ers e ve como vai ficar a venda e adicionar ai oq a gente decidiu além do protótipo (requer decisão do time)
 ✅ - localização
 ✅ - reserva
+⏳ - Resetar o campo produto após produto adicionado na venda
+⏳ - relatório de compras
+⏳ - Adicionar liquido no relatório de vendas
+⏳ - Alinhar cores dos elementos do Dashboard

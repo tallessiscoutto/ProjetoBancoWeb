@@ -15,7 +15,7 @@ class ProdutoSeeder extends Seeder
         $natura = Fornecedor::where('nome', 'like', '%Natura%')->first();
         $boticario = Fornecedor::where('nome', 'like', '%Boticário%')->first();
         $distribuidora = Fornecedor::where('nome', 'like', '%Distribuidora%')->first();
-        
+
         // Se não encontrar, usar o primeiro disponível
         $fornecedorPadrao = Fornecedor::first();
 
@@ -117,4 +117,3 @@ class ProdutoSeeder extends Seeder
         }
     }
 }
-

@@ -10,6 +10,10 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('Reservas.salvar') }}">
                     @csrf
+                    {{-- Quando vier da tela de Vendas com múltiplos itens, mantemos a lista em um campo oculto --}}
+                    @if(!empty($itensVenda))
+                        <input type="hidden" name="itens_venda" value="{{ old('itens_venda', request('itens')) }}">
+                    @endif
                     <div class="mb-3">
                         <label class="form-label" for="cliente_id">Cliente</label>
                         <select class="form-select" id="cliente_id" name="cliente_id" required>
@@ -19,19 +23,53 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="produto_id">Produto</label>
-                        <select class="form-select" id="produto_id" name="produto_id" required>
-                            <option value="">Selecione</option>
-                            @foreach($produtos as $p)
-                                <option value="{{ $p->id }}" {{ (int)old('produto_id', $produtoSelecionadoId ?? request('produto_id')) === $p->id ? 'selected' : '' }}>#{{ $p->id }} · {{ $p->nome }} (Estoque: {{ $p->quantidade }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="quantidade">Quantidade</label>
-                        <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" value="{{ old('quantidade', $quantidadeSugerida ?? request('quantidade') ?? 1) }}" required>
-                    </div>
+
+                    @if(empty($itensVenda))
+                        {{-- Fluxo padrão: uma reserva, um produto --}}
+                        <div class="mb-3">
+                            <label class="form-label" for="produto_id">Produto</label>
+                            <select class="form-select" id="produto_id" name="produto_id" required>
+                                <option value="">Selecione</option>
+                                @foreach($produtos as $p)
+                                    <option value="{{ $p->id }}" {{ (int)old('produto_id', $produtoSelecionadoId ?? request('produto_id')) === $p->id ? 'selected' : '' }}>#{{ $p->id }} · {{ $p->nome }} (Estoque: {{ $p->quantidade }})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="quantidade">Quantidade</label>
+                            <input class="form-control" type="number" id="quantidade" name="quantidade" min="1" value="{{ old('quantidade', $quantidadeSugerida ?? request('quantidade') ?? 1) }}" required>
+                        </div>
+                    @else
+                        {{-- Fluxo vindo da tela de Vendas: vários produtos serão reservados de uma vez --}}
+                        <div class="mb-3">
+                            <div class="alert alert-info">
+                                Estão sendo importados <strong>{{ count($itensVenda) }}</strong> produto(s) da tela de vendas.
+                                As reservas serão criadas para todos os itens abaixo usando o mesmo cliente e a mesma validade.
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Produto</th>
+                                            <th>Qtd</th>
+                                            <th>Estoque Atual</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($itensVenda as $item)
+                                            <tr>
+                                                <td>{{ $item['produto_id'] }}</td>
+                                                <td>{{ $item['nome'] }}</td>
+                                                <td>{{ $item['quantidade'] }}</td>
+                                                <td>{{ $item['estoque'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
                     <div class="mb-3">
                         <label class="form-label" for="data_validade">Validade</label>
                         <input class="form-control" type="date" id="data_validade" name="data_validade" required>
