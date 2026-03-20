@@ -20,3 +20,6 @@ ADICIONAR
 ⏳ - relatório de compras
 ⏳ - Adicionar liquido no relatório de vendas
 ⏳ - Alinhar cores dos elementos do Dashboard
+⏳ - Remover funções sem sentido ( Reserva, locação)
+⏳ - Unificar funções ( localização, Cadastro de produtos(Economia de codigo e Memoria))
+⏳ - Realinhar o projeto de acordo com outros objetivos sem ser perfumaria 
