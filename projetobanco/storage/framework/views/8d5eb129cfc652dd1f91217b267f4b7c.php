@@ -1,26 +1,11 @@
+
+
 <?php $__env->startSection('title', 'Cadastrar Funcionário'); ?>
 
 <?php $__env->startSection('page-title', 'Cadastro de Funcionários'); ?>
 <?php $__env->startSection('page-description', 'Gerencie o cadastro de funcionários'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <?php if(session('success')): ?>
-        <div class="alert alert-success">
-            <?php echo e(session('success')); ?>
-
-        </div>
-    <?php endif; ?>
-
-    <?php if($errors->any()): ?>
-        <div class="alert alert-danger">
-            <ul>
-                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <li><?php echo e($error); ?></li>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </ul>
-        </div>
-    <?php endif; ?>
-
     <form action="<?php echo e(route('Funcionarios.salvar')); ?>" method="POST" class="form">
         <?php echo csrf_field(); ?>
         <div class="form-group">

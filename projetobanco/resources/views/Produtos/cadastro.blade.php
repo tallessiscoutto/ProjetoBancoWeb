@@ -1,7 +1,6 @@
+
 @extends('layouts.financeiro')
-
 @section('title', 'Cadastrar Produto')
-
 @section('styles')
 <style>
     .produtos-page {
@@ -138,21 +137,7 @@
 @endsection
 
 @section('content')
-@if(session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
 
-@if($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
 
 <div class="produtos-page">
     @isset($stats)
@@ -435,7 +420,7 @@
             </div>
         </div>
     </div>
-
+@endsection
     @section('scripts')
     <script>
         function visualizarProduto(id) {
