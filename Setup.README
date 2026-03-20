@@ -1,0 +1,53 @@
+README — Configuração e execução do sistema
+
+Requisitos
+PHP 8.2.12
+Composer
+MySQL
+XAMPP (opcional, caso utilize Apache/MySQL localmente)
+
+Passo a passo para rodar o sistema
+
+Instale as dependências do projeto
+composer install
+Configure o arquivo .env
+Crie o arquivo .env com base no .env.example.
+No Linux/macOS:
+cp .env.example .env
+No Windows:
+copy .env.example .env
+
+Depois, preencha corretamente as configurações do banco de dados no .env:
+DB_CONNECTION
+DB_HOST
+DB_PORT
+DB_DATABASE
+DB_USERNAME
+DB_PASSWORD
+Gere a chave da aplicação
+php artisan key:generate
+Crie o banco de dados no MySQL
+Crie manualmente um banco vazio com o nome configurado no .env.
+
+Exemplo:
+projetobanco
+Rode as migrations
+php artisan migrate
+Rode as seeders
+php artisan db:seed
+Inicie o servidor local
+php artisan serve
+Observações
+Usuários não se registram sozinhos no sistema.
+A criação de contas é manual, realizada pela administração/desenvolvedores.
+As seeders são obrigatórias para o funcionamento correto do sistema.
+Caso utilize XAMPP, pode ser necessário habilitar no php.ini a seguinte extensão:
+extension=zip
+Estrutura básica de funcionamento
+O sistema depende da execução correta de:
+dependências do Composer
+configuração do .env
+geração da APP_KEY
+migrations
+seeders
+Sem isso, algumas funcionalidades podem não funcionar corretamente.
