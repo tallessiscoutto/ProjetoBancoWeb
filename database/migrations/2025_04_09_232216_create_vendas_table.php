@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('vendas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('produto_id')->constrained('Produtos');
+            $table->foreignId('produto_id')->constrained()->cascadeOnDelete();
             $table->integer('quantidade');
             $table->decimal('preco_total', 10, 2);
             $table->timestamps();
