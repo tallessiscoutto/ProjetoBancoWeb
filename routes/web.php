@@ -17,7 +17,9 @@ use App\Http\Controllers\HomeController;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/', function () {
+    return "API ONLINE 🚀";
+});
 // Rotas públicas (apenas login - sem registro de novos usuários)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
