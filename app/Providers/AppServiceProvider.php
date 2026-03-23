@@ -18,9 +18,10 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        // Forçar a paginação a usar os templates do Bootstrap 5
-        Paginator::useBootstrapFive();
+    public function boot()
+{
+    if (app()->environment('production')) {
+        URL::forceScheme('https');
     }
+}
 }
