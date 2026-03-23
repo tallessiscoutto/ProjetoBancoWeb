@@ -113,7 +113,7 @@ class ProdutoSeeder extends Seeder
         ];
 
         foreach ($produtos as $produto) {
-            Produto::create($produto);
+            Produto::firstOrCreate($produto);
         }
     }
 }
