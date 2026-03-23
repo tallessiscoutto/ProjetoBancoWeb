@@ -48,7 +48,7 @@ class FuncionarioSeeder extends Seeder
         ];
 
         foreach ($funcionarios as $funcionario) {
-            Funcionario::firstOrCreate($funcionario);
+            Funcionario::create($funcionario);
         }
     }
 }

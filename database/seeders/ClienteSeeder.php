@@ -48,7 +48,7 @@ class ClienteSeeder extends Seeder
         ];
 
         foreach ($clientes as $cliente) {
-            Cliente::firstOrCreate($cliente);
+            Cliente::create($cliente);
         }
     }
 }
