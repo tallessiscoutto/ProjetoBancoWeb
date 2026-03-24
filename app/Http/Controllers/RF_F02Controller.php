@@ -156,7 +156,7 @@ class RF_F02Controller extends Controller
         }
 
         $request->validate([
-            'produto_id' => 'required|exists:Produtos,id',
+            'produto_id' => 'required|exists:produtos,id',
         ]);
 
         $produtoSelecionado = Produto::with('fornecedor')->find($request->produto_id);
