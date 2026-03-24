@@ -20,7 +20,7 @@ class RF_F02Controller extends Controller
 
         if ($request->isMethod('post')) {
             $request->validate([
-                'produto_id' => 'required|exists:Produtos,id',
+                'produto_id' => 'required|exists:produtos,id',
             ]);
             $produtoSelecionado = Produto::with('fornecedor')->find($request->produto_id);
         }
@@ -36,7 +36,7 @@ class RF_F02Controller extends Controller
         
         // Manter compatibilidade com o método antigo (um produto por vez)
         $request->validate([
-            'produto_id' => 'required|exists:Produtos,id',
+            'produto_id' => 'required|exists:produtos,id',
             'quantidade' => 'required|integer|min:1',
             'funcionario_id' => 'required|exists:funcionarios,id',
         ]);
